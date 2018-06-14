@@ -1,4 +1,4 @@
-MPASM 5.77                          MAIN.ASM   6-14-2018  13:22:33         PAGE  1
+MPASM 5.77                          MAIN.ASM   6-14-2018  13:47:38         PAGE  1
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -57,7 +57,7 @@ Message[302]: Register in operand not in bank 0.  Ensure that bank bits are corr
 0008   0188           00031                 CLRF    ANSEL
 0009   1303           00032                 BCF     STATUS, RP1
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-MPASM 5.77                          MAIN.ASM   6-14-2018  13:22:33         PAGE  2
+MPASM 5.77                          MAIN.ASM   6-14-2018  13:47:38         PAGE  2
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -66,7 +66,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
 000A   0186           00033                 CLRF    TRISB
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
 000B   0188           00034                 CLRF    TRISD
-000C   3083           00035                 MOVLW   b'10000011'
+000C   3083           00035                 MOVLW   b'10000011'                     ;Prescaler en 011 = 1/16
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
 000D   0081           00036                 MOVWF   OPTION_REG
 000E   168B           00037                 BSF     INTCON, T0IE
@@ -74,17 +74,17 @@ Message[302]: Register in operand not in bank 0.  Ensure that bank bits are corr
 0010   1283           00039                 BCF     STATUS, RP0
 0011   202B           00040                 CALL    INIT_TIMER
 0012   3000           00041                 MOVLW   0x00
-0013   0088           00042                 MOVWF   PORTD
-0014   0086           00043                 MOVWF   PORTB
-0015   01A0           00044                 CLRF    NCOL
+0013   0088           00042                 MOVWF   PORTD                           ;Filas en PuertoD
+0014   0086           00043                 MOVWF   PORTB                           ;Columnas en PuertoB
+0015   01A0           00044                 CLRF    NCOL                            ;Limpio variables
 0016   01A1           00045                 CLRF    NFIL
                       00046                 
 0017   0000           00047 MAIN_LOOP       NOP 
 0018   2817           00048                 GOTO    MAIN_LOOP
                       00049 
                       00050 
-0019                  00051 TABLA_COL
-0019   0782           00052                 ADDWF   PCL, F
+0019                  00051 TABLA_COL                                               ;En 0 prende la columna
+0019   0782           00052                 ADDWF   PCL, F                          ;correspondiente
 001A   34FE           00053                 RETLW   b'11111110'
 001B   34FD           00054                 RETLW   b'11111101'
 001C   34FB           00055                 RETLW   b'11111011'
@@ -94,8 +94,8 @@ Message[302]: Register in operand not in bank 0.  Ensure that bank bits are corr
 0020   34BF           00059                 RETLW   b'10111111'
 0021   347F           00060                 RETLW   b'01111111'
                       00061                 
-0022                  00062 TABLA_FIL
-0022   0782           00063                 ADDWF   PCL, F
+0022                  00062 TABLA_FIL                                               ;En 1 prende la fila
+0022   0782           00063                 ADDWF   PCL, F                          ;correspondiente
 0023   3401           00064                 RETLW   0x01
 0024   3402           00065                 RETLW   0x02
 0025   3404           00066                 RETLW   0x04
@@ -106,7 +106,7 @@ Message[302]: Register in operand not in bank 0.  Ensure that bank bits are corr
 002A   3480           00071                 RETLW   0x80            
                       00072                         
                       00073                 
-002B                  00074 INIT_TIMER  
+002B                  00074 INIT_TIMER                                              ;Timer0 aprox en 1 uSeg
 002B   30FF           00075                 MOVLW   d'255'
 002C   0081           00076                 MOVWF   TMR0
 002D   0008           00077                 RETURN
@@ -116,7 +116,7 @@ Message[302]: Register in operand not in bank 0.  Ensure that bank bits are corr
 002F   2031           00081                 CALL    INTER_TMR
 0030   0009           00082                 RETFIE
                       00083 
-MPASM 5.77                          MAIN.ASM   6-14-2018  13:22:33         PAGE  3
+MPASM 5.77                          MAIN.ASM   6-14-2018  13:47:38         PAGE  3
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -124,26 +124,26 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
 
 0031                  00084 INTER_TMR       
 0031   110B           00085                 BCF     INTCON, T0IF
-0032   300F           00086                 MOVLW   D'15'           ; Genera un loop de 999.999 uS
-0033   00A5           00087                 MOVWF   CounterC
+0032   300F           00086                 MOVLW   d'15'                           ;Genera un loop de 
+0033   00A5           00087                 MOVWF   CounterC                        ;999.999 uSeg
 Warning[207]: Found label after column 1. (LOOP2)
-0034   3068           00088     LOOP2       MOVLW   D'104'
+0034   3068           00088     LOOP2       MOVLW   d'104'
 0035   00A4           00089                 MOVWF   CounterB
 Warning[207]: Found label after column 1. (LOOP1)
-0036   308A           00090     LOOP1       MOVLW   D'138'
+0036   308A           00090     LOOP1       MOVLW   d'138'
 0037   00A3           00091                 MOVWF   CounterA
 Warning[207]: Found label after column 1. (LOOP)
-0038   0BA3           00092     LOOP        DECFSZ  CounterA,1
+0038   0BA3           00092     LOOP        DECFSZ  CounterA,F
 0039   2838           00093                 GOTO    LOOP
-003A   0BA4           00094                 DECFSZ  CounterB,1
+003A   0BA4           00094                 DECFSZ  CounterB,F
 003B   2836           00095                 GOTO    LOOP1
-003C   0BA5           00096                 DECFSZ  CounterC,1
+003C   0BA5           00096                 DECFSZ  CounterC,F
 003D   2834           00097                 GOTO    LOOP2
                       00098                 ;INCF   AUX, F
                       00099                 ;BTFSS  AUX, 2
                       00100                 ;GOTO   TERMINA
 003E   0820           00101                 MOVF    NCOL, W
-003F   2019           00102                 CALL    TABLA_COL
+003F   2019           00102                 CALL    TABLA_COL               
 0040   0086           00103                 MOVWF   PORTB
 0041   0821           00104                 MOVF    NFIL, W
 0042   2022           00105                 CALL    TABLA_FIL
@@ -165,7 +165,7 @@ Warning[207]: Found label after column 1. (LOOP)
                       00121                 
 0050   0000           00122                 NOP
                       00123                 END
-MPASM 5.77                          MAIN.ASM   6-14-2018  13:22:33         PAGE  4
+MPASM 5.77                          MAIN.ASM   6-14-2018  13:47:38         PAGE  4
 
 
 SYMBOL TABLE
@@ -224,7 +224,7 @@ BRG5                              00000005
 BRG6                              00000006
 BRG7                              00000007
 BRG8                              00000000
-MPASM 5.77                          MAIN.ASM   6-14-2018  13:22:33         PAGE  5
+MPASM 5.77                          MAIN.ASM   6-14-2018  13:47:38         PAGE  5
 
 
 SYMBOL TABLE
@@ -283,7 +283,7 @@ CCPR2L                            0000001B
 CHS0                              00000002
 CHS1                              00000003
 CHS2                              00000004
-MPASM 5.77                          MAIN.ASM   6-14-2018  13:22:33         PAGE  6
+MPASM 5.77                          MAIN.ASM   6-14-2018  13:47:38         PAGE  6
 
 
 SYMBOL TABLE
@@ -342,7 +342,7 @@ INDF                              00000000
 INICIO                            00000005
 INIT_TIMER                        0000002B
 INTCON                            0000000B
-MPASM 5.77                          MAIN.ASM   6-14-2018  13:22:33         PAGE  7
+MPASM 5.77                          MAIN.ASM   6-14-2018  13:47:38         PAGE  7
 
 
 SYMBOL TABLE
@@ -401,7 +401,7 @@ NOT_WRITE                         00000002
 OERR                              00000001
 OPTION_REG                        00000081
 OSCCON                            0000008F
-MPASM 5.77                          MAIN.ASM   6-14-2018  13:22:33         PAGE  8
+MPASM 5.77                          MAIN.ASM   6-14-2018  13:47:38         PAGE  8
 
 
 SYMBOL TABLE
@@ -460,7 +460,7 @@ RA6                               00000006
 RA7                               00000007
 RB0                               00000000
 RB1                               00000001
-MPASM 5.77                          MAIN.ASM   6-14-2018  13:22:33         PAGE  9
+MPASM 5.77                          MAIN.ASM   6-14-2018  13:47:38         PAGE  9
 
 
 SYMBOL TABLE
@@ -519,7 +519,7 @@ SCS                               00000000
 SEN                               00000000
 SENDB                             00000003
 SMP                               00000007
-MPASM 5.77                          MAIN.ASM   6-14-2018  13:22:33         PAGE 10
+MPASM 5.77                          MAIN.ASM   6-14-2018  13:47:38         PAGE 10
 
 
 SYMBOL TABLE
@@ -578,7 +578,7 @@ TMR0IE                            00000005
 TMR0IF                            00000002
 TMR1                              0000000E
 TMR1CS                            00000001
-MPASM 5.77                          MAIN.ASM   6-14-2018  13:22:33         PAGE 11
+MPASM 5.77                          MAIN.ASM   6-14-2018  13:47:38         PAGE 11
 
 
 SYMBOL TABLE
@@ -637,7 +637,7 @@ TRISD7                            00000007
 TRISE                             00000089
 TRISE0                            00000000
 TRISE1                            00000001
-MPASM 5.77                          MAIN.ASM   6-14-2018  13:22:33         PAGE 12
+MPASM 5.77                          MAIN.ASM   6-14-2018  13:47:38         PAGE 12
 
 
 SYMBOL TABLE
@@ -696,7 +696,7 @@ WREN                              00000002
 WRERR                             00000003
 WUE                               00000001
 Z                                 00000002
-MPASM 5.77                          MAIN.ASM   6-14-2018  13:22:33         PAGE 13
+MPASM 5.77                          MAIN.ASM   6-14-2018  13:47:38         PAGE 13
 
 
 SYMBOL TABLE
@@ -755,7 +755,7 @@ _LVP_ON                           00003FFF
 _MCLRE_OFF                        00003FDF
 _MCLRE_ON                         00003FFF
 _PWRTE_OFF                        00003FFF
-MPASM 5.77                          MAIN.ASM   6-14-2018  13:22:33         PAGE 14
+MPASM 5.77                          MAIN.ASM   6-14-2018  13:47:38         PAGE 14
 
 
 SYMBOL TABLE
