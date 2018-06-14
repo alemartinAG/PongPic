@@ -1,15 +1,15 @@
 MPLINK 5.08, LINKER
-Linker Map File - Created Thu Jun 14 13:22:35 2018
+Linker Map File - Created Thu Jun 14 18:54:40 2018
 
                                  Section Info
                   Section       Type    Address   Location Size(Bytes)
                 ---------  ---------  ---------  ---------  ---------
                    .org_0       code   0x000000    program   0x000000
                    .org_1       code   0x000000    program   0x000002
-                   .org_2       code   0x000004    program   0x000002
-                   .org_3       code   0x000005    program   0x000098
-      .config_2007_MAIN.O       code   0x002007    program   0x000002
-      .config_2008_MAIN.O       code   0x002008    program   0x000002
+                   .org_2       code   0x000004    program   0x000000
+                   .org_3       code   0x000005    program   0x0000a0
+.config_2007_CONTROLLER.O       code   0x002007    program   0x000002
+.config_2008_CONTROLLER.O       code   0x002008    program   0x000002
 
 
 
@@ -17,42 +17,40 @@ Linker Map File - Created Thu Jun 14 13:22:35 2018
                                Start         End      
                            ---------   ---------      
                             0x000000    0x000000      
-                            0x000004    0x000050      
+                            0x000005    0x000054      
                             0x002007    0x002008      
-            80 out of 8455 program addresses used, program memory utilization is 0%
+            83 out of 8455 program addresses used, program memory utilization is 0%
 
 
 
                               Symbols - Sorted by Name
                      Name    Address   Location    Storage File                     
                 ---------  ---------  ---------  --------- ---------                
-                   INICIO   0x000005    program     static C:\Users\drudi\Desktop\EDIIFinal\PongPic\PongPic.X\main.asm
-               INIT_TIMER   0x00002b    program     static C:\Users\drudi\Desktop\EDIIFinal\PongPic\PongPic.X\main.asm
-                INTER_TMR   0x000031    program     static C:\Users\drudi\Desktop\EDIIFinal\PongPic\PongPic.X\main.asm
-                      ISR   0x00002e    program     static C:\Users\drudi\Desktop\EDIIFinal\PongPic\PongPic.X\main.asm
-                     LOOP   0x000038    program     static C:\Users\drudi\Desktop\EDIIFinal\PongPic\PongPic.X\main.asm
-                    LOOP1   0x000036    program     static C:\Users\drudi\Desktop\EDIIFinal\PongPic\PongPic.X\main.asm
-                    LOOP2   0x000034    program     static C:\Users\drudi\Desktop\EDIIFinal\PongPic\PongPic.X\main.asm
-                MAIN_LOOP   0x000017    program     static C:\Users\drudi\Desktop\EDIIFinal\PongPic\PongPic.X\main.asm
-                TABLA_COL   0x000019    program     static C:\Users\drudi\Desktop\EDIIFinal\PongPic\PongPic.X\main.asm
-                TABLA_FIL   0x000022    program     static C:\Users\drudi\Desktop\EDIIFinal\PongPic\PongPic.X\main.asm
-                  TERMINA   0x00004e    program     static C:\Users\drudi\Desktop\EDIIFinal\PongPic\PongPic.X\main.asm
+              CHECK_BOTON   0x000030    program     static C:\Users\Ale_2\Desktop\Cursada\Repos\PongPic\PongPic.X\controller.asm
+               CONFIGURAR   0x000036    program     static C:\Users\Ale_2\Desktop\Cursada\Repos\PongPic\PongPic.X\controller.asm
+                    DELAY   0x000045    program     static C:\Users\Ale_2\Desktop\Cursada\Repos\PongPic\PongPic.X\controller.asm
+                GET_BOTON   0x00000a    program     static C:\Users\Ale_2\Desktop\Cursada\Repos\PongPic\PongPic.X\controller.asm
+                   INICIO   0x000005    program     static C:\Users\Ale_2\Desktop\Cursada\Repos\PongPic\PongPic.X\controller.asm
+                     LOOP   0x00004b    program     static C:\Users\Ale_2\Desktop\Cursada\Repos\PongPic\PongPic.X\controller.asm
+                    LOOP1   0x000049    program     static C:\Users\Ale_2\Desktop\Cursada\Repos\PongPic\PongPic.X\controller.asm
+                    LOOP2   0x000047    program     static C:\Users\Ale_2\Desktop\Cursada\Repos\PongPic\PongPic.X\controller.asm
+               LOOP_CHECK   0x000018    program     static C:\Users\Ale_2\Desktop\Cursada\Repos\PongPic\PongPic.X\controller.asm
+                MAIN_LOOP   0x000006    program     static C:\Users\Ale_2\Desktop\Cursada\Repos\PongPic\PongPic.X\controller.asm
 
 
 
                               Symbols - Sorted by Address
                      Name    Address   Location    Storage File                     
                 ---------  ---------  ---------  --------- ---------                
-                   INICIO   0x000005    program     static C:\Users\drudi\Desktop\EDIIFinal\PongPic\PongPic.X\main.asm
-                MAIN_LOOP   0x000017    program     static C:\Users\drudi\Desktop\EDIIFinal\PongPic\PongPic.X\main.asm
-                TABLA_COL   0x000019    program     static C:\Users\drudi\Desktop\EDIIFinal\PongPic\PongPic.X\main.asm
-                TABLA_FIL   0x000022    program     static C:\Users\drudi\Desktop\EDIIFinal\PongPic\PongPic.X\main.asm
-               INIT_TIMER   0x00002b    program     static C:\Users\drudi\Desktop\EDIIFinal\PongPic\PongPic.X\main.asm
-                      ISR   0x00002e    program     static C:\Users\drudi\Desktop\EDIIFinal\PongPic\PongPic.X\main.asm
-                INTER_TMR   0x000031    program     static C:\Users\drudi\Desktop\EDIIFinal\PongPic\PongPic.X\main.asm
-                    LOOP2   0x000034    program     static C:\Users\drudi\Desktop\EDIIFinal\PongPic\PongPic.X\main.asm
-                    LOOP1   0x000036    program     static C:\Users\drudi\Desktop\EDIIFinal\PongPic\PongPic.X\main.asm
-                     LOOP   0x000038    program     static C:\Users\drudi\Desktop\EDIIFinal\PongPic\PongPic.X\main.asm
-                  TERMINA   0x00004e    program     static C:\Users\drudi\Desktop\EDIIFinal\PongPic\PongPic.X\main.asm
+                   INICIO   0x000005    program     static C:\Users\Ale_2\Desktop\Cursada\Repos\PongPic\PongPic.X\controller.asm
+                MAIN_LOOP   0x000006    program     static C:\Users\Ale_2\Desktop\Cursada\Repos\PongPic\PongPic.X\controller.asm
+                GET_BOTON   0x00000a    program     static C:\Users\Ale_2\Desktop\Cursada\Repos\PongPic\PongPic.X\controller.asm
+               LOOP_CHECK   0x000018    program     static C:\Users\Ale_2\Desktop\Cursada\Repos\PongPic\PongPic.X\controller.asm
+              CHECK_BOTON   0x000030    program     static C:\Users\Ale_2\Desktop\Cursada\Repos\PongPic\PongPic.X\controller.asm
+               CONFIGURAR   0x000036    program     static C:\Users\Ale_2\Desktop\Cursada\Repos\PongPic\PongPic.X\controller.asm
+                    DELAY   0x000045    program     static C:\Users\Ale_2\Desktop\Cursada\Repos\PongPic\PongPic.X\controller.asm
+                    LOOP2   0x000047    program     static C:\Users\Ale_2\Desktop\Cursada\Repos\PongPic\PongPic.X\controller.asm
+                    LOOP1   0x000049    program     static C:\Users\Ale_2\Desktop\Cursada\Repos\PongPic\PongPic.X\controller.asm
+                     LOOP   0x00004b    program     static C:\Users\Ale_2\Desktop\Cursada\Repos\PongPic\PongPic.X\controller.asm
 
 

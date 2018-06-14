@@ -57,17 +57,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=main.asm
+SOURCEFILES_QUOTED_IF_SPACED=controller.asm
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/main.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/main.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/controller.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/controller.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/main.o
+OBJECTFILES=${OBJECTDIR}/controller.o
 
 # Source Files
-SOURCEFILES=main.asm
+SOURCEFILES=controller.asm
 
 
 CFLAGS=
@@ -94,30 +94,30 @@ MP_LINKER_DEBUG_OPTION=
 # ------------------------------------------------------------------------------------
 # Rules for buildStep: assemble
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
-${OBJECTDIR}/main.o: main.asm  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/controller.o: controller.asm  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/main.o.d 
-	@${RM} ${OBJECTDIR}/main.o 
-	@${FIXDEPS} dummy.d -e "C:/Users/drudi/Desktop/EDIIFinal/PongPic/PongPic.X/main.ERR" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -d__DEBUG -d__MPLAB_DEBUGGER_SIMULATOR=1 -q -p$(MP_PROCESSOR_OPTION)  $(ASM_OPTIONS)    \"C:/Users/drudi/Desktop/EDIIFinal/PongPic/PongPic.X/main.asm\" 
-	@${MV}  C:/Users/drudi/Desktop/EDIIFinal/PongPic/PongPic.X/main.O ${OBJECTDIR}/main.o
-	@${MV}  C:/Users/drudi/Desktop/EDIIFinal/PongPic/PongPic.X/main.ERR ${OBJECTDIR}/main.o.err
-	@${MV}  C:/Users/drudi/Desktop/EDIIFinal/PongPic/PongPic.X/main.LST ${OBJECTDIR}/main.o.lst
-	@${RM}  C:/Users/drudi/Desktop/EDIIFinal/PongPic/PongPic.X/main.HEX 
-	@${DEP_GEN} -d "${OBJECTDIR}/main.o"
-	@${FIXDEPS} "${OBJECTDIR}/main.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
+	@${RM} ${OBJECTDIR}/controller.o.d 
+	@${RM} ${OBJECTDIR}/controller.o 
+	@${FIXDEPS} dummy.d -e "C:/Users/Ale_2/Desktop/Cursada/Repos/PongPic/PongPic.X/controller.ERR" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -d__DEBUG -d__MPLAB_DEBUGGER_SIMULATOR=1 -q -p$(MP_PROCESSOR_OPTION)  $(ASM_OPTIONS)    \"C:/Users/Ale_2/Desktop/Cursada/Repos/PongPic/PongPic.X/controller.asm\" 
+	@${MV}  C:/Users/Ale_2/Desktop/Cursada/Repos/PongPic/PongPic.X/controller.O ${OBJECTDIR}/controller.o
+	@${MV}  C:/Users/Ale_2/Desktop/Cursada/Repos/PongPic/PongPic.X/controller.ERR ${OBJECTDIR}/controller.o.err
+	@${MV}  C:/Users/Ale_2/Desktop/Cursada/Repos/PongPic/PongPic.X/controller.LST ${OBJECTDIR}/controller.o.lst
+	@${RM}  C:/Users/Ale_2/Desktop/Cursada/Repos/PongPic/PongPic.X/controller.HEX 
+	@${DEP_GEN} -d "${OBJECTDIR}/controller.o"
+	@${FIXDEPS} "${OBJECTDIR}/controller.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
 	
 else
-${OBJECTDIR}/main.o: main.asm  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/controller.o: controller.asm  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/main.o.d 
-	@${RM} ${OBJECTDIR}/main.o 
-	@${FIXDEPS} dummy.d -e "C:/Users/drudi/Desktop/EDIIFinal/PongPic/PongPic.X/main.ERR" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -q -p$(MP_PROCESSOR_OPTION)  $(ASM_OPTIONS)    \"C:/Users/drudi/Desktop/EDIIFinal/PongPic/PongPic.X/main.asm\" 
-	@${MV}  C:/Users/drudi/Desktop/EDIIFinal/PongPic/PongPic.X/main.O ${OBJECTDIR}/main.o
-	@${MV}  C:/Users/drudi/Desktop/EDIIFinal/PongPic/PongPic.X/main.ERR ${OBJECTDIR}/main.o.err
-	@${MV}  C:/Users/drudi/Desktop/EDIIFinal/PongPic/PongPic.X/main.LST ${OBJECTDIR}/main.o.lst
-	@${RM}  C:/Users/drudi/Desktop/EDIIFinal/PongPic/PongPic.X/main.HEX 
-	@${DEP_GEN} -d "${OBJECTDIR}/main.o"
-	@${FIXDEPS} "${OBJECTDIR}/main.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
+	@${RM} ${OBJECTDIR}/controller.o.d 
+	@${RM} ${OBJECTDIR}/controller.o 
+	@${FIXDEPS} dummy.d -e "C:/Users/Ale_2/Desktop/Cursada/Repos/PongPic/PongPic.X/controller.ERR" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -q -p$(MP_PROCESSOR_OPTION)  $(ASM_OPTIONS)    \"C:/Users/Ale_2/Desktop/Cursada/Repos/PongPic/PongPic.X/controller.asm\" 
+	@${MV}  C:/Users/Ale_2/Desktop/Cursada/Repos/PongPic/PongPic.X/controller.O ${OBJECTDIR}/controller.o
+	@${MV}  C:/Users/Ale_2/Desktop/Cursada/Repos/PongPic/PongPic.X/controller.ERR ${OBJECTDIR}/controller.o.err
+	@${MV}  C:/Users/Ale_2/Desktop/Cursada/Repos/PongPic/PongPic.X/controller.LST ${OBJECTDIR}/controller.o.lst
+	@${RM}  C:/Users/Ale_2/Desktop/Cursada/Repos/PongPic/PongPic.X/controller.HEX 
+	@${DEP_GEN} -d "${OBJECTDIR}/controller.o"
+	@${FIXDEPS} "${OBJECTDIR}/controller.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
 	
 endif
 
