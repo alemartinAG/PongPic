@@ -32,24 +32,24 @@ INICIO
 		BCF	STATUS, RP1
 		CLRF	TRISB
 		CLRF	TRISD
-		MOVLW	b'10000011'
+		MOVLW	b'10000011'			;Prescaler en 011 = 1/16
 		MOVWF	OPTION_REG
 		BSF	INTCON, T0IE
 		BSF	INTCON, GIE
 		BCF	STATUS, RP0
 		CALL	INIT_TIMER
 		MOVLW	0x00
-		MOVWF	PORTD
-		MOVWF	PORTB
-		CLRF	NCOL
+		MOVWF	PORTD				;Filas en PuertoD
+		MOVWF	PORTB				;Columnas en PuertoB
+		CLRF	NCOL				;Limpio variables
 		CLRF	NFIL
 		
 MAIN_LOOP	NOP 
 		GOTO	MAIN_LOOP
 
 
-TABLA_COL
-		ADDWF	PCL, F
+TABLA_COL						;En 0 prende la columna
+		ADDWF	PCL, F				;correspondiente
 		RETLW	b'11111110'
 		RETLW	b'11111101'
 		RETLW	b'11111011'
@@ -59,8 +59,8 @@ TABLA_COL
 		RETLW	b'10111111'
 		RETLW	b'01111111'
 		
-TABLA_FIL
-		ADDWF	PCL, F
+TABLA_FIL						;En 1 prende la fila
+		ADDWF	PCL, F				;correspondiente
 		RETLW	0x01
 		RETLW	0x02
 		RETLW	0x04
@@ -71,7 +71,7 @@ TABLA_FIL
 		RETLW	0x80		
 			
 		
-INIT_TIMER  
+INIT_TIMER						;Timer0 aprox en 1 uSeg
 		MOVLW	d'255'
 		MOVWF	TMR0
 		RETURN
@@ -83,23 +83,23 @@ ISR
 
 INTER_TMR	
 		BCF	INTCON, T0IF
-		MOVLW	D'15'		; Genera un loop de 999.999 uS
-		MOVWF	CounterC
-    LOOP2	MOVLW	D'104'
+		MOVLW	d'15'				;Genera un loop de 
+		MOVWF	CounterC			;999.999 uSeg
+    LOOP2	MOVLW	d'104'
 		MOVWF	CounterB
-    LOOP1	MOVLW	D'138'
+    LOOP1	MOVLW	d'138'
 		MOVWF	CounterA
-    LOOP        DECFSZ	CounterA,1
+    LOOP        DECFSZ	CounterA,F
 	        GOTO	LOOP
-		DECFSZ	CounterB,1
+		DECFSZ	CounterB,F
 		GOTO	LOOP1
-		DECFSZ	CounterC,1
+		DECFSZ	CounterC,F
 		GOTO	LOOP2
 		;INCF	AUX, F
 		;BTFSS	AUX, 2
 		;GOTO	TERMINA
 		MOVF	NCOL, W
-		CALL	TABLA_COL
+		CALL	TABLA_COL		
 		MOVWF	PORTB
 		MOVF	NFIL, W
 		CALL	TABLA_FIL
