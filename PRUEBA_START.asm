@@ -48,12 +48,14 @@ ORG 0x00
 GOTO INICIO
 	
 ORG 0x04
-
+GOTO SUBINT
 ;///////////////////-    INICIO DEL PROGRAMA   -//////////////////////////   
    
 ORG 0x05
 INICIO		
 	    CALL    CONFIGURAR
+LOOP_START  BTFSS   FLAG_START, 0
+	    GOTO    LOOP_START
 MAIN_LOOP   CALL    REFRESH
 	    CALL    DELAY
 	    MOVF    NCOL, F
@@ -246,8 +248,9 @@ RESTART
 ;///////////////////-    CONFIGURACION INICIAL   -//////////////////////////
 	    
 CONFIGURAR
-	    MOVLW	0x61
+	    MOVLW	0x42
 	    MOVWF	COD_START
+	    CLRF	FLAG_START
 	    CLRF	C1
 	    CLRF	C2
 	    CLRF	C3
@@ -275,10 +278,10 @@ CONFIGURAR
 	    MOVLW	d'25'				;Carga para el generador de Baudios
 	    MOVWF	SPBRG				
 	    BSF		TXSTA, BRGH			;Selecciona alta velocidad
-	    BCF		TXSTA, 4			;Modo asíncrono seleccionado (SYNC)
+	    BCF		TXSTA, 4			;Modo asÃ­ncrono seleccionado (SYNC)
 	    CLRF	PIE1
 	    CLRF	PIE2
-	    BSF		PIE1, RCIE			;Habilita la interrupcion por recepción
+	    BSF		PIE1, RCIE			;Habilita la interrupcion por recepciÃ³n
 	    CLRF	INTCON
 	    BSF		INTCON, GIE			;Interrupciones globales habilitadas
 	    BSF		INTCON, PEIE
@@ -294,10 +297,10 @@ CONFIGURAR
 	    ;BSF	INTCON, GIE
 	    ;BCF		STATUS, RP0
 	    ;CALL	INIT_TIMER
-	    ;MOVLW	0x00
-	   ; MOVWF	PORTD
-	    ;MOVLW	0xFF
-	   ; MOVWF	PORTB
+;	    MOVLW	0x00
+;	    MOVWF	PORTD
+;	    MOVLW	0xFF
+;	    MOVWF	PORTB
 	    RETURN
 	
 ;///////////////////-    DELAY   -//////////////////////////
