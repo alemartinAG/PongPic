@@ -1,0 +1,20 @@
+apply plugin: 'java'
+
+sourceSets {
+    main {
+         java {
+            srcDirs = ['src']
+         }
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+	compile group: 'org.rxtx', name: 'rxtx', version: '2.1.7'
+}
