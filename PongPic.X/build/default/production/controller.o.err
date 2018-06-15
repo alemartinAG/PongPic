@@ -1,12 +1,15 @@
 Warning[205] C:\USERS\ALE_2\DESKTOP\CURSADA\REPOS\PONGPIC\PONGPIC.X\CONTROLLER.ASM 11 : Found directive in column 1. (CBLOCK)
-Warning[205] C:\USERS\ALE_2\DESKTOP\CURSADA\REPOS\PONGPIC\PONGPIC.X\CONTROLLER.ASM 19 : Found directive in column 1. (ENDC)
-Warning[205] C:\USERS\ALE_2\DESKTOP\CURSADA\REPOS\PONGPIC\PONGPIC.X\CONTROLLER.ASM 25 : Found directive in column 1. (ORG)
-Warning[203] C:\USERS\ALE_2\DESKTOP\CURSADA\REPOS\PONGPIC\PONGPIC.X\CONTROLLER.ASM 26 : Found opcode in column 1. (GOTO)
-Warning[205] C:\USERS\ALE_2\DESKTOP\CURSADA\REPOS\PONGPIC\PONGPIC.X\CONTROLLER.ASM 28 : Found directive in column 1. (ORG)
-Warning[205] C:\USERS\ALE_2\DESKTOP\CURSADA\REPOS\PONGPIC\PONGPIC.X\CONTROLLER.ASM 30 : Found directive in column 1. (ORG)
-Message[302] C:\USERS\ALE_2\DESKTOP\CURSADA\REPOS\PONGPIC\PONGPIC.X\CONTROLLER.ASM 107 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] C:\USERS\ALE_2\DESKTOP\CURSADA\REPOS\PONGPIC\PONGPIC.X\CONTROLLER.ASM 108 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] C:\USERS\ALE_2\DESKTOP\CURSADA\REPOS\PONGPIC\PONGPIC.X\CONTROLLER.ASM 110 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] C:\USERS\ALE_2\DESKTOP\CURSADA\REPOS\PONGPIC\PONGPIC.X\CONTROLLER.ASM 111 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] C:\USERS\ALE_2\DESKTOP\CURSADA\REPOS\PONGPIC\PONGPIC.X\CONTROLLER.ASM 112 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] C:\USERS\ALE_2\DESKTOP\CURSADA\REPOS\PONGPIC\PONGPIC.X\CONTROLLER.ASM 113 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Warning[205] C:\USERS\ALE_2\DESKTOP\CURSADA\REPOS\PONGPIC\PONGPIC.X\CONTROLLER.ASM 21 : Found directive in column 1. (ENDC)
+Warning[205] C:\USERS\ALE_2\DESKTOP\CURSADA\REPOS\PONGPIC\PONGPIC.X\CONTROLLER.ASM 22 : Found directive in column 1. (CBLOCK)
+Warning[205] C:\USERS\ALE_2\DESKTOP\CURSADA\REPOS\PONGPIC\PONGPIC.X\CONTROLLER.ASM 33 : Found directive in column 1. (ENDC)
+Warning[205] C:\USERS\ALE_2\DESKTOP\CURSADA\REPOS\PONGPIC\PONGPIC.X\CONTROLLER.ASM 42 : Found directive in column 1. (ORG)
+Warning[203] C:\USERS\ALE_2\DESKTOP\CURSADA\REPOS\PONGPIC\PONGPIC.X\CONTROLLER.ASM 43 : Found opcode in column 1. (GOTO)
+Warning[205] C:\USERS\ALE_2\DESKTOP\CURSADA\REPOS\PONGPIC\PONGPIC.X\CONTROLLER.ASM 45 : Found directive in column 1. (ORG)
+Warning[205] C:\USERS\ALE_2\DESKTOP\CURSADA\REPOS\PONGPIC\PONGPIC.X\CONTROLLER.ASM 49 : Found directive in column 1. (ORG)
+Message[302] C:\USERS\ALE_2\DESKTOP\CURSADA\REPOS\PONGPIC\PONGPIC.X\CONTROLLER.ASM 255 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] C:\USERS\ALE_2\DESKTOP\CURSADA\REPOS\PONGPIC\PONGPIC.X\CONTROLLER.ASM 256 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] C:\USERS\ALE_2\DESKTOP\CURSADA\REPOS\PONGPIC\PONGPIC.X\CONTROLLER.ASM 258 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] C:\USERS\ALE_2\DESKTOP\CURSADA\REPOS\PONGPIC\PONGPIC.X\CONTROLLER.ASM 259 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] C:\USERS\ALE_2\DESKTOP\CURSADA\REPOS\PONGPIC\PONGPIC.X\CONTROLLER.ASM 260 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] C:\USERS\ALE_2\DESKTOP\CURSADA\REPOS\PONGPIC\PONGPIC.X\CONTROLLER.ASM 261 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] C:\USERS\ALE_2\DESKTOP\CURSADA\REPOS\PONGPIC\PONGPIC.X\CONTROLLER.ASM 262 : Register in operand not in bank 0.  Ensure that bank bits are correct.

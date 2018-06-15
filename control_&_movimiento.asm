@@ -13,7 +13,6 @@ CBLOCK	0x20
 	NFIL
 	AUX
 	BOTON
-	BOTON_2
 	CounterA
 	CounterB
 	CounterC
@@ -32,35 +31,28 @@ CBLOCK	0x30
 	PLYR_2
 ENDC
 	
-DATA_PIN2   EQU	   5
-LATCH_PIN2  EQU	   4
-PULSE_PIN2  EQU	   3
-DATA_PIN    EQU    2 
-LATCH_PIN   EQU    1
-PULSE_PIN   EQU    0
+DATA_PIN    EQU    3 
+LATCH_PIN   EQU    2
+PULSE_PIN   EQU    1
 
 ORG 0x00
 GOTO INICIO
 	
 ORG 0x04
 
-;///////////////////-    INICIO DEL PROGRAMA   -//////////////////////////   
-   
 ORG 0x05
 INICIO		
 	    CALL    CONFIGURAR
+;MAIN_LOOP   CALL    GET_BOTON
+;	    CALL    CHECK_BOTON
 MAIN_LOOP   CALL    REFRESH
 	    CALL    DELAY
 	    MOVF    NCOL, F
 	    BTFSS   STATUS, Z
 	    GOTO    MAIN_LOOP
 	    CALL    GET_BOTON
-	    CALL    GET_BOTON2
-	    CALL    CHECK_BOTON1
-	    CALL    CHECK_BOTON2
+	    CALL    CHECK_BOTON
 	    GOTO    MAIN_LOOP
-	    
-;///////////////////-    LO MUESTRO EN LA MATRIZ   -//////////////////////////
 	    
 REFRESH
 	    MOVF    PLYR_1, W
@@ -94,11 +86,11 @@ TABLA_COL
 	    RETLW   0xFB
 	    RETLW   0xFD
 	    RETLW   0xFE
-	        
-;///////////////////-    CONTROL 1   -//////////////////////////	
+	    
+	    
+	
 	
 GET_BOTON
-	    CLRF   AUX
 	    BSF	   PORTA, LATCH_PIN
 	    NOP
 	    NOP
@@ -137,95 +129,30 @@ LOOP_CHECK  BTFSS   PORTA, DATA_PIN
 	    NOP
 	    BCF	    PORTA, PULSE_PIN
 	    RETURN
-	    
-CHECK_BOTON1
+	
+CHECK_BOTON
 	    MOVF	BOTON, F
 	    BTFSC	STATUS, Z
 	    RETURN
-	    BTFSC	BOTON, 3    ;chequeo el boton de arriba
+	    BTFSC	BOTON, 4    ;chequeo el boton de arriba
 	    GOTO	UP_PRESSED  
-	    BTFSC	BOTON, 2    ;chequeo el boton de abajo
+	    BTFSC	BOTON, 3    ;chequeo el boton de abajo
 	    GOTO	DW_PRESSED
 	    ;CLRF	PORTB
-FIN_CB1	    CLRF	BOTON
+FIN_CB	    CLRF	BOTON
 	    RETURN
 UP_PRESSED  BTFSC	PLYR_1, 7
-	    GOTO	FIN_CB1
+	    GOTO	FIN_CB
 	    BCF		STATUS, C
 	    RLF		PLYR_1, F
-	    GOTO	FIN_CB1
+	    GOTO	FIN_CB
 DW_PRESSED  BTFSC	PLYR_1, 0
-	    GOTO	FIN_CB1
+	    GOTO	FIN_CB
 	    BCF		STATUS, C
 	    RRF		PLYR_1, F
-	    GOTO	FIN_CB1
-	  
-;///////////////////-    CONTROL 2   -//////////////////////////
-	    
-GET_BOTON2
-	    CLRF    AUX
-	    BSF	   PORTA, LATCH_PIN2
-	    NOP
-	    NOP
-	    NOP
-	    NOP
-	    NOP
-	    NOP
-	    NOP
-	    NOP
-	    NOP
-	    NOP
-	    NOP
-	    NOP
-	    BCF	    PORTA, LATCH_PIN2
-LOOP_CHECK2 BTFSS   PORTA, DATA_PIN2
-	    INCF    BOTON_2, F	;si data = 0 se presiono un boton
-	    BCF	    PORTA, PULSE_PIN2
-	    BCF	    STATUS, C
-	    RLF	    BOTON_2, F	;lo muevo hacia la izq para distingui botones
-	    NOP			;el boton A se pierde
-	    NOP
-	    NOP
-	    NOP
-	    BSF	    PORTA, PULSE_PIN2
-	    INCF    AUX, F
-	    MOVLW   0x08	;chequeo que si lo hice 8 veces
-	    SUBWF   AUX, W
-	    BTFSS   STATUS, C
-	    GOTO    LOOP_CHECK2
-	    CLRF    AUX
-	    NOP
-	    NOP
-	    NOP
-	    NOP
-	    NOP
-	    NOP
-	    BCF	    PORTA, PULSE_PIN2
-	    RETURN
+	    GOTO	FIN_CB
 
-CHECK_BOTON2
-	    MOVF	BOTON_2, F
-	    BTFSC	STATUS, Z
-	    RETURN
-	    BTFSC	BOTON_2, 4    ;chequeo el boton de arriba
-	    GOTO	UP_PRESSED2  
-	    BTFSC	BOTON_2, 3    ;chequeo el boton de abajo
-	    GOTO	DW_PRESSED2
-	    ;CLRF	PORTB
-FIN_CB2	    CLRF	BOTON_2
-	    RETURN
-UP_PRESSED2  BTFSC	PLYR_2, 7
-	    GOTO	FIN_CB2
-	    BCF		STATUS, C
-	    RLF		PLYR_2, F
-	    GOTO	FIN_CB2
-DW_PRESSED2  BTFSC	PLYR_2, 0
-	    GOTO	FIN_CB1
-	    BCF		STATUS, C
-	    RRF		PLYR_2, F
-	    GOTO	FIN_CB2 
-	  
-;///////////////////-    REINCIO EL JUEGO   -//////////////////////////	   
+	   
 	    
 RESTART
 	    MOVLW	0x18
@@ -238,8 +165,6 @@ RESTART
 	    MOVWF	C1
 	    RETURN
 
-;///////////////////-    CONFIGURACION INICIAL   -//////////////////////////
-	    
 CONFIGURAR
 	    CLRF	C1
 	    CLRF	C2
@@ -258,8 +183,7 @@ CONFIGURAR
 	    CLRF	TRISB
 	    CLRF	TRISD
 	    CLRF	TRISA
-	    BSF		TRISA, DATA_PIN
-	    BSF		TRISA, DATA_PIN2
+	    BSF		TRISA, 3
 	    ;MOVLW	b'10000011'
 	    ;MOVWF	OPTION_REG
 	    ;BSF	INTCON, T0IE
@@ -272,10 +196,8 @@ CONFIGURAR
 	   ; MOVWF	PORTB
 	    RETURN
 	
-;///////////////////-    DELAY   -//////////////////////////
-	    
 DELAY
-	MOVLW	D'1'		
+	MOVLW	D'1'		; Genera un loop de 250.000 uS
 	MOVWF	CounterC
 LOOP2	MOVLW	D'3'
 	MOVWF	CounterB
@@ -293,7 +215,3 @@ LOOP    DECFSZ	CounterA,1
 	
 	NOP
 	END
-	
-	    
-	    
-

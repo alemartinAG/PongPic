@@ -1,4 +1,4 @@
-MPASM 5.76                    CONTROLLER.ASM   6-14-2018  19:37:30         PAGE  1
+MPASM 5.76                    CONTROLLER.ASM   6-15-2018  16:41:49         PAGE  1
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -31,165 +31,337 @@ Warning[205]: Found directive in column 1. (CBLOCK)
   00000021            00013         NFIL
   00000022            00014         AUX
   00000023            00015         BOTON
-  00000024            00016         CounterA
-  00000025            00017         CounterB
-  00000026            00018         CounterC
+  00000024            00016         BOTON_2
+  00000025            00017         CounterA
+  00000026            00018         CounterB
+  00000027            00019         CounterC
+  00000028            00020         FILAS
 Warning[205]: Found directive in column 1. (ENDC)
-                      00019 ENDC
-                      00020         
-  00000003            00021 DATA_PIN    EQU    3 
-  00000002            00022 LATCH_PIN   EQU    2
-  00000001            00023 PULSE_PIN   EQU    1
-                      00024 
+                      00021 ENDC
+Warning[205]: Found directive in column 1. (CBLOCK)
+                      00022 CBLOCK  0x30
+  00000030            00023         C1
+  00000031            00024         C2
+  00000032            00025         C3
+  00000033            00026         C4
+  00000034            00027         C5
+  00000035            00028         C6
+  00000036            00029         C7
+  00000037            00030         C8
+  00000038            00031         PLYR_1
+  00000039            00032         PLYR_2
+Warning[205]: Found directive in column 1. (ENDC)
+                      00033 ENDC
+                      00034         
+  00000005            00035 DATA_PIN2   EQU    5
+  00000004            00036 LATCH_PIN2  EQU    4
+  00000003            00037 PULSE_PIN2  EQU    3
+  00000002            00038 DATA_PIN    EQU    2 
+MPASM 5.76                    CONTROLLER.ASM   6-15-2018  16:41:49         PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+  00000001            00039 LATCH_PIN   EQU    1
+  00000000            00040 PULSE_PIN   EQU    0
+                      00041 
 Warning[205]: Found directive in column 1. (ORG)
-0000                  00025 ORG 0x00
+0000                  00042 ORG 0x00
 Warning[203]: Found opcode in column 1. (GOTO)
-0000   2805           00026 GOTO INICIO
-                      00027         
+0000   2805           00043 GOTO INICIO
+                      00044         
 Warning[205]: Found directive in column 1. (ORG)
-0004                  00028 ORG 0x04
-                      00029 
+0004                  00045 ORG 0x04
+                      00046 
+                      00047 ;///////////////////-    INICIO DEL PROGRAMA   -//////////////////////////   
+                      00048    
 Warning[205]: Found directive in column 1. (ORG)
-0005                  00030 ORG 0x05
-0005                  00031 INICIO          
-0005   2045           00032             CALL    CONFIGURAR
-0006   200A           00033 MAIN_LOOP   CALL    GET_BOTON
-0007   2030           00034             CALL    CHECK_BOTON
-0008   2054           00035             CALL    DELAY
-0009   2806           00036             GOTO    MAIN_LOOP
-MPASM 5.76                    CONTROLLER.ASM   6-14-2018  19:37:30         PAGE  2
+0005                  00049 ORG 0x05
+0005                  00050 INICIO          
+0005   20A9           00051             CALL    CONFIGURAR
+0006   2010           00052 MAIN_LOOP   CALL    REFRESH
+0007   20BE           00053             CALL    DELAY
+0008   08A0           00054             MOVF    NCOL, F
+0009   1D03           00055             BTFSS   STATUS, Z
+000A   2806           00056             GOTO    MAIN_LOOP
+000B   202C           00057             CALL    GET_BOTON
+000C   2066           00058             CALL    GET_BOTON2
+000D   2053           00059             CALL    CHECK_BOTON1
+000E   208D           00060             CALL    CHECK_BOTON2
+000F   2806           00061             GOTO    MAIN_LOOP
+                      00062             
+                      00063 ;///////////////////-    LO MUESTRO EN LA MATRIZ   -//////////////////////////
+                      00064             
+0010                  00065 REFRESH
+0010   0838           00066             MOVF    PLYR_1, W
+0011   00B7           00067             MOVWF   C8
+0012   0839           00068             MOVF    PLYR_2, W
+0013   00B0           00069             MOVWF   C1
+0014   0820           00070             MOVF    NCOL, W
+0015   3E30           00071             ADDLW   0x30
+0016   0084           00072             MOVWF   FSR
+0017   0800           00073             MOVF    INDF, W
+0018   00A8           00074             MOVWF   FILAS
+                      00075             ;COMF    FILAS, W
+0019   0086           00076             MOVWF   PORTB
+001A   0820           00077             MOVF    NCOL, W
+001B   2023           00078             CALL    TABLA_COL
+001C   0088           00079             MOVWF   PORTD
+001D   0AA0           00080             INCF    NCOL, F
+001E   0820           00081             MOVF    NCOL, W
+001F   3C07           00082             SUBLW   0x07
+0020   1C03           00083             BTFSS   STATUS, C
+0021   01A0           00084             CLRF    NCOL
+0022   0008           00085             RETURN
+                      00086             
+0023                  00087 TABLA_COL
+MPASM 5.76                    CONTROLLER.ASM   6-15-2018  16:41:49         PAGE  3
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-                      00037         
-                      00038         
-000A                  00039 GET_BOTON
-000A   1505           00040             BSF    PORTA, 2
-000B   0000           00041             NOP
-000C   0000           00042             NOP
-000D   0000           00043             NOP
-000E   0000           00044             NOP
-000F   0000           00045             NOP
-0010   0000           00046             NOP
-0011   0000           00047             NOP
-0012   0000           00048             NOP
-0013   0000           00049             NOP
-0014   0000           00050             NOP
-0015   0000           00051             NOP
-0016   0000           00052             NOP
-0017   1105           00053             BCF     PORTA, 2
-0018   1D85           00054 LOOP_CHECK  BTFSS   PORTA, 3
-0019   0AA3           00055             INCF    BOTON, F    ;si data = 0 se presiono un boton
-001A   1085           00056             BCF     PORTA, 1
-001B   1003           00057             BCF     STATUS, C
-001C   0DA3           00058             RLF     BOTON, F    ;lo muevo hacia la izq para distingui botones
-001D   0000           00059             NOP                 ;el boton A se pierde
-001E   0000           00060             NOP
-001F   0000           00061             NOP
-0020   0000           00062             NOP
-0021   1485           00063             BSF     PORTA, 1
-0022   0AA2           00064             INCF    AUX, F
-0023   3008           00065             MOVLW   0x08        ;chequeo que si lo hice 8 veces
-0024   0222           00066             SUBWF   AUX, W
-0025   1C03           00067             BTFSS   STATUS, C
-0026   2818           00068             GOTO    LOOP_CHECK
-0027   01A2           00069             CLRF    AUX
-0028   0000           00070             NOP
-0029   0000           00071             NOP
-002A   0000           00072             NOP
-002B   0000           00073             NOP
-002C   0000           00074             NOP
-002D   0000           00075             NOP
-002E   1085           00076             BCF     PORTA, 1
-002F   0008           00077             RETURN
-                      00078         
-0030                  00079 CHECK_BOTON
-0030   08A3           00080             MOVF        BOTON, F
-0031   1903           00081             BTFSC       STATUS, Z
-0032   0008           00082             RETURN
-0033   1A23           00083             BTFSC       BOTON, 4    ;chequeo el boton de arriba
-0034   283C           00084             GOTO        UP_PRESSED  
-0035   19A3           00085             BTFSC       BOTON, 3    ;chequeo el boton de abajo
-0036   283F           00086             GOTO        DOWN_PRESSED
-0037   1923           00087             BTFSC       BOTON, 2
-0038   2842           00088             GOTO        LEFT_PRESSED
-0039   0186           00089             CLRF        PORTB
-MPASM 5.76                    CONTROLLER.ASM   6-14-2018  19:37:30         PAGE  3
+0023   0782           00088             ADDWF   PCL, F
+0024   347F           00089             RETLW   0x7F
+0025   34BF           00090             RETLW   0xBF
+0026   34DF           00091             RETLW   0xDF
+0027   34EF           00092             RETLW   0xEF
+0028   34F7           00093             RETLW   0xF7
+0029   34FB           00094             RETLW   0xFB
+002A   34FD           00095             RETLW   0xFD
+002B   34FE           00096             RETLW   0xFE
+                      00097                 
+                      00098 ;///////////////////-    CONTROL 1   -//////////////////////////        
+                      00099         
+002C                  00100 GET_BOTON
+002C   01A2           00101             CLRF   AUX
+002D   1485           00102             BSF    PORTA, LATCH_PIN
+002E   0000           00103             NOP
+002F   0000           00104             NOP
+0030   0000           00105             NOP
+0031   0000           00106             NOP
+0032   0000           00107             NOP
+0033   0000           00108             NOP
+0034   0000           00109             NOP
+0035   0000           00110             NOP
+0036   0000           00111             NOP
+0037   0000           00112             NOP
+0038   0000           00113             NOP
+0039   0000           00114             NOP
+003A   1085           00115             BCF     PORTA, LATCH_PIN
+003B   1D05           00116 LOOP_CHECK  BTFSS   PORTA, DATA_PIN
+003C   0AA3           00117             INCF    BOTON, F    ;si data = 0 se presiono un boton
+003D   1005           00118             BCF     PORTA, PULSE_PIN
+003E   1003           00119             BCF     STATUS, C
+003F   0DA3           00120             RLF     BOTON, F    ;lo muevo hacia la izq para distingui botones
+0040   0000           00121             NOP                 ;el boton A se pierde
+0041   0000           00122             NOP
+0042   0000           00123             NOP
+0043   0000           00124             NOP
+0044   1405           00125             BSF     PORTA, PULSE_PIN
+0045   0AA2           00126             INCF    AUX, F
+0046   3008           00127             MOVLW   0x08        ;chequeo que si lo hice 8 veces
+0047   0222           00128             SUBWF   AUX, W
+0048   1C03           00129             BTFSS   STATUS, C
+0049   283B           00130             GOTO    LOOP_CHECK
+004A   01A2           00131             CLRF    AUX
+004B   0000           00132             NOP
+004C   0000           00133             NOP
+004D   0000           00134             NOP
+004E   0000           00135             NOP
+004F   0000           00136             NOP
+0050   0000           00137             NOP
+0051   1005           00138             BCF     PORTA, PULSE_PIN
+0052   0008           00139             RETURN
+                      00140             
+MPASM 5.76                    CONTROLLER.ASM   6-15-2018  16:41:49         PAGE  4
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-003A   01A3           00090 FIN_CB      CLRF        BOTON
-003B   0008           00091             RETURN
-003C   300F           00092 UP_PRESSED  MOVLW       0x0F
-003D   0086           00093             MOVWF       PORTB
-003E   283A           00094             GOTO        FIN_CB
-003F   30F0           00095 DOWN_PRESSED MOVLW      0xF0
-0040   0086           00096             MOVWF       PORTB
-0041   283A           00097             GOTO        FIN_CB
-0042   30AA           00098 LEFT_PRESSED MOVLW      0xAA
-0043   0086           00099             MOVWF       PORTB
-0044   283A           00100             GOTO        FIN_CB
-                      00101            
-                      00102             ;CLRF       PORTB
-                      00103         
-0045                  00104 CONFIGURAR
-0045   1683           00105         BSF     STATUS, RP0
-0046   1703           00106         BSF     STATUS, RP1
-Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0047   0189           00107         CLRF    ANSELH
-Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0048   0188           00108         CLRF    ANSEL
-0049   1303           00109         BCF     STATUS, RP1
-Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-004A   0186           00110         CLRF    TRISB
-Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-004B   0188           00111         CLRF    TRISD
-Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-004C   0185           00112         CLRF    TRISA
-Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-004D   1585           00113         BSF     TRISA, 3
-                      00114         ;MOVLW  b'10000011'
-                      00115         ;MOVWF  OPTION_REG
-                      00116         ;BSF    INTCON, T0IE
-                      00117         ;BSF    INTCON, GIE
-004E   1283           00118         BCF     STATUS, RP0
-                      00119         ;CALL   INIT_TIMER
-004F   3000           00120         MOVLW   0x00
-0050   0088           00121         MOVWF   PORTD
-0051   30FF           00122         MOVLW   0xFF
-0052   0086           00123         MOVWF   PORTB
-0053   0008           00124         RETURN
-                      00125         
-0054                  00126 DELAY
-0054   3001           00127         MOVLW   D'1'            ; Genera un loop de 250.000 uS
-0055   00A6           00128         MOVWF   CounterC
-0056   301C           00129 LOOP2   MOVLW   D'28'
-0057   00A5           00130         MOVWF   CounterB
-0058   30BD           00131 LOOP1   MOVLW   D'189'
-0059   00A4           00132         MOVWF   CounterA
-005A   0BA4           00133 LOOP    DECFSZ  CounterA,1
-005B   285A           00134         GOTO    LOOP
-005C   0BA5           00135         DECFSZ  CounterB,1
-005D   2858           00136         GOTO    LOOP1
-MPASM 5.76                    CONTROLLER.ASM   6-14-2018  19:37:30         PAGE  4
+0053                  00141 CHECK_BOTON1
+0053   08A3           00142             MOVF        BOTON, F
+0054   1903           00143             BTFSC       STATUS, Z
+0055   0008           00144             RETURN
+0056   19A3           00145             BTFSC       BOTON, 3    ;chequeo el boton de arriba
+0057   285C           00146             GOTO        UP_PRESSED  
+0058   1923           00147             BTFSC       BOTON, 2    ;chequeo el boton de abajo
+0059   2861           00148             GOTO        DW_PRESSED
+                      00149             ;CLRF       PORTB
+005A   01A3           00150 FIN_CB1     CLRF        BOTON
+005B   0008           00151             RETURN
+005C   1BB8           00152 UP_PRESSED  BTFSC       PLYR_1, 7
+005D   285A           00153             GOTO        FIN_CB1
+005E   1003           00154             BCF         STATUS, C
+005F   0DB8           00155             RLF         PLYR_1, F
+0060   285A           00156             GOTO        FIN_CB1
+0061   1838           00157 DW_PRESSED  BTFSC       PLYR_1, 0
+0062   285A           00158             GOTO        FIN_CB1
+0063   1003           00159             BCF         STATUS, C
+0064   0CB8           00160             RRF         PLYR_1, F
+0065   285A           00161             GOTO        FIN_CB1
+                      00162           
+                      00163 ;///////////////////-    CONTROL 2   -//////////////////////////
+                      00164             
+0066                  00165 GET_BOTON2
+0066   01A2           00166             CLRF    AUX
+0067   1605           00167             BSF    PORTA, LATCH_PIN2
+0068   0000           00168             NOP
+0069   0000           00169             NOP
+006A   0000           00170             NOP
+006B   0000           00171             NOP
+006C   0000           00172             NOP
+006D   0000           00173             NOP
+006E   0000           00174             NOP
+006F   0000           00175             NOP
+0070   0000           00176             NOP
+0071   0000           00177             NOP
+0072   0000           00178             NOP
+0073   0000           00179             NOP
+0074   1205           00180             BCF     PORTA, LATCH_PIN2
+0075   1E85           00181 LOOP_CHECK2 BTFSS   PORTA, DATA_PIN2
+0076   0AA4           00182             INCF    BOTON_2, F  ;si data = 0 se presiono un boton
+0077   1185           00183             BCF     PORTA, PULSE_PIN2
+0078   1003           00184             BCF     STATUS, C
+0079   0DA4           00185             RLF     BOTON_2, F  ;lo muevo hacia la izq para distingui botones
+007A   0000           00186             NOP                 ;el boton A se pierde
+007B   0000           00187             NOP
+007C   0000           00188             NOP
+007D   0000           00189             NOP
+007E   1585           00190             BSF     PORTA, PULSE_PIN2
+007F   0AA2           00191             INCF    AUX, F
+0080   3008           00192             MOVLW   0x08        ;chequeo que si lo hice 8 veces
+0081   0222           00193             SUBWF   AUX, W
+MPASM 5.76                    CONTROLLER.ASM   6-15-2018  16:41:49         PAGE  5
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-005E   0BA6           00137         DECFSZ  CounterC,1
-005F   2856           00138         GOTO    LOOP2
-0060   30FF           00139         MOVLW   0xFF
-0061   0086           00140         MOVWF   PORTB
-0062   0008           00141         RETURN
-                      00142         
-0063   0000           00143         NOP
-                      00144         END
-MPASM 5.76                    CONTROLLER.ASM   6-14-2018  19:37:30         PAGE  5
+0082   1C03           00194             BTFSS   STATUS, C
+0083   2875           00195             GOTO    LOOP_CHECK2
+0084   01A2           00196             CLRF    AUX
+0085   0000           00197             NOP
+0086   0000           00198             NOP
+0087   0000           00199             NOP
+0088   0000           00200             NOP
+0089   0000           00201             NOP
+008A   0000           00202             NOP
+008B   1185           00203             BCF     PORTA, PULSE_PIN2
+008C   0008           00204             RETURN
+                      00205 
+008D                  00206 CHECK_BOTON2
+008D   08A4           00207             MOVF        BOTON_2, F
+008E   1903           00208             BTFSC       STATUS, Z
+008F   0008           00209             RETURN
+0090   1A24           00210             BTFSC       BOTON_2, 4    ;chequeo el boton de arriba
+0091   2896           00211             GOTO        UP_PRESSED2  
+0092   19A4           00212             BTFSC       BOTON_2, 3    ;chequeo el boton de abajo
+0093   289B           00213             GOTO        DW_PRESSED2
+                      00214             ;CLRF       PORTB
+0094   01A4           00215 FIN_CB2     CLRF        BOTON_2
+0095   0008           00216             RETURN
+0096   1BB9           00217 UP_PRESSED2  BTFSC      PLYR_2, 7
+0097   2894           00218             GOTO        FIN_CB2
+0098   1003           00219             BCF         STATUS, C
+0099   0DB9           00220             RLF         PLYR_2, F
+009A   2894           00221             GOTO        FIN_CB2
+009B   1839           00222 DW_PRESSED2  BTFSC      PLYR_2, 0
+009C   285A           00223             GOTO        FIN_CB1
+009D   1003           00224             BCF         STATUS, C
+009E   0CB9           00225             RRF         PLYR_2, F
+009F   2894           00226             GOTO        FIN_CB2 
+                      00227           
+                      00228 ;///////////////////-    REINCIO EL JUEGO   -//////////////////////////    
+                      00229             
+00A0                  00230 RESTART
+00A0   3018           00231             MOVLW       0x18
+00A1   00B8           00232             MOVWF       PLYR_1
+00A2   3018           00233             MOVLW       0x18
+00A3   00B9           00234             MOVWF       PLYR_2
+00A4   0838           00235             MOVF        PLYR_1, W
+00A5   00B7           00236             MOVWF       C8
+00A6   0839           00237             MOVF        PLYR_2, W
+00A7   00B0           00238             MOVWF       C1
+00A8   0008           00239             RETURN
+                      00240 
+                      00241 ;///////////////////-    CONFIGURACION INICIAL   -//////////////////////////
+                      00242             
+00A9                  00243 CONFIGURAR
+00A9   01B0           00244             CLRF        C1
+00AA   01B1           00245             CLRF        C2
+00AB   01B2           00246             CLRF        C3
+MPASM 5.76                    CONTROLLER.ASM   6-15-2018  16:41:49         PAGE  6
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+00AC   01B3           00247             CLRF        C4
+00AD   01B4           00248             CLRF        C5
+00AE   01B5           00249             CLRF        C6
+00AF   01B6           00250             CLRF        C7
+00B0   01B7           00251             CLRF        C8
+00B1   20A0           00252             CALL        RESTART
+00B2   1683           00253             BSF         STATUS, RP0
+00B3   1703           00254             BSF         STATUS, RP1
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+00B4   0189           00255             CLRF        ANSELH
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+00B5   0188           00256             CLRF        ANSEL
+00B6   1303           00257             BCF         STATUS, RP1
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+00B7   0186           00258             CLRF        TRISB
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+00B8   0188           00259             CLRF        TRISD
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+00B9   0185           00260             CLRF        TRISA
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+00BA   1505           00261             BSF         TRISA, DATA_PIN
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+00BB   1685           00262             BSF         TRISA, DATA_PIN2
+                      00263             ;MOVLW      b'10000011'
+                      00264             ;MOVWF      OPTION_REG
+                      00265             ;BSF        INTCON, T0IE
+                      00266             ;BSF        INTCON, GIE
+00BC   1283           00267             BCF         STATUS, RP0
+                      00268             ;CALL       INIT_TIMER
+                      00269             ;MOVLW      0x00
+                      00270            ; MOVWF      PORTD
+                      00271             ;MOVLW      0xFF
+                      00272            ; MOVWF      PORTB
+00BD   0008           00273             RETURN
+                      00274         
+                      00275 ;///////////////////-    DELAY   -//////////////////////////
+                      00276             
+00BE                  00277 DELAY
+00BE   3001           00278         MOVLW   D'1'            
+00BF   00A7           00279         MOVWF   CounterC
+00C0   3003           00280 LOOP2   MOVLW   D'3'
+00C1   00A6           00281         MOVWF   CounterB
+00C2   30BD           00282 LOOP1   MOVLW   D'189'
+00C3   00A5           00283         MOVWF   CounterA
+00C4   0BA5           00284 LOOP    DECFSZ  CounterA,1
+00C5   28C4           00285         GOTO    LOOP
+00C6   0BA6           00286         DECFSZ  CounterB,1
+00C7   28C2           00287         GOTO    LOOP1
+00C8   0BA7           00288         DECFSZ  CounterC,1
+00C9   28C0           00289         GOTO    LOOP2
+                      00290         ;MOVLW  0xFF
+                      00291         ;MOVWF  PORTB
+00CA   0008           00292         RETURN
+MPASM 5.76                    CONTROLLER.ASM   6-15-2018  16:41:49         PAGE  7
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00293         
+00CB   0000           00294         NOP
+                      00295         END
+MPASM 5.76                    CONTROLLER.ASM   6-15-2018  16:41:49         PAGE  8
 
 
 SYMBOL TABLE
@@ -233,6 +405,7 @@ BCLIE                             00000003
 BCLIF                             00000003
 BF                                00000000
 BOTON                             00000023
+BOTON_2                           00000024
 BRG0                              00000000
 BRG1                              00000001
 BRG10                             00000002
@@ -247,17 +420,18 @@ BRG3                              00000003
 BRG4                              00000004
 BRG5                              00000005
 BRG6                              00000006
-BRG7                              00000007
-MPASM 5.76                    CONTROLLER.ASM   6-14-2018  19:37:30         PAGE  6
+MPASM 5.76                    CONTROLLER.ASM   6-15-2018  16:41:49         PAGE  9
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+BRG7                              00000007
 BRG8                              00000000
 BRG9                              00000001
 BRGH                              00000002
 C                                 00000000
+C1                                00000030
 C1CH0                             00000000
 C1CH1                             00000001
 C1IE                              00000005
@@ -269,6 +443,7 @@ C1POL                             00000004
 C1R                               00000002
 C1RSEL                            00000005
 C1SEN                             00000005
+C2                                00000031
 C2CH0                             00000000
 C2CH1                             00000001
 C2IE                              00000006
@@ -281,6 +456,12 @@ C2R                               00000002
 C2REN                             00000004
 C2RSEL                            00000004
 C2SYNC                            00000000
+C3                                00000032
+C4                                00000033
+C5                                00000034
+C6                                00000035
+C7                                00000036
+C8                                00000037
 CCP1CON                           00000017
 CCP1IE                            00000002
 CCP1IF                            00000002
@@ -298,6 +479,12 @@ CCP2M1                            00000001
 CCP2M2                            00000002
 CCP2M3                            00000003
 CCP2X                             00000005
+MPASM 5.76                    CONTROLLER.ASM   6-15-2018  16:41:49         PAGE 10
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 CCP2Y                             00000004
 CCPR1                             00000015
 CCPR1H                            00000016
@@ -305,14 +492,9 @@ CCPR1L                            00000015
 CCPR2                             0000001B
 CCPR2H                            0000001C
 CCPR2L                            0000001B
-CHECK_BOTON                       00000030
+CHECK_BOTON1                      00000053
+CHECK_BOTON2                      0000008D
 CHS0                              00000002
-MPASM 5.76                    CONTROLLER.ASM   6-14-2018  19:37:30         PAGE  7
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 CHS1                              00000003
 CHS2                              00000004
 CHS3                              00000005
@@ -321,22 +503,24 @@ CKP                               00000004
 CM1CON0                           00000107
 CM2CON0                           00000108
 CM2CON1                           00000109
-CONFIGURAR                        00000045
+CONFIGURAR                        000000A9
 CREN                              00000004
 CSRC                              00000007
-CounterA                          00000024
-CounterB                          00000025
-CounterC                          00000026
+CounterA                          00000025
+CounterB                          00000026
+CounterC                          00000027
 D                                 00000005
 DATA_ADDRESS                      00000005
-DATA_PIN                          00000003
+DATA_PIN                          00000002
+DATA_PIN2                         00000005
 DC                                00000001
 DC1B0                             00000004
 DC1B1                             00000005
 DC2B0                             00000004
 DC2B1                             00000005
-DELAY                             00000054
-DOWN_PRESSED                      0000003F
+DELAY                             000000BE
+DW_PRESSED                        00000061
+DW_PRESSED2                       0000009B
 D_A                               00000005
 D_NOT_A                           00000005
 ECCPAS                            0000009C
@@ -354,24 +538,27 @@ EEDATH                            0000010E
 EEIE                              00000004
 EEIF                              00000004
 EEPGD                             00000007
-F                                 00000001
-FERR                              00000002
-FIN_CB                            0000003A
-FSR                               00000004
-FVREN                             00000000
-GCEN                              00000007
-GET_BOTON                         0000000A
-GIE                               00000007
-GO                                00000001
-GO_DONE                           00000001
-GO_NOT_DONE                       00000001
-HTS                               00000002
-MPASM 5.76                    CONTROLLER.ASM   6-14-2018  19:37:30         PAGE  8
+MPASM 5.76                    CONTROLLER.ASM   6-15-2018  16:41:49         PAGE 11
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+F                                 00000001
+FERR                              00000002
+FILAS                             00000028
+FIN_CB1                           0000005A
+FIN_CB2                           00000094
+FSR                               00000004
+FVREN                             00000000
+GCEN                              00000007
+GET_BOTON                         0000002C
+GET_BOTON2                        00000066
+GIE                               00000007
+GO                                00000001
+GO_DONE                           00000001
+GO_NOT_DONE                       00000001
+HTS                               00000002
 I2C_DATA                          00000005
 I2C_READ                          00000002
 I2C_START                         00000003
@@ -395,12 +582,13 @@ IRCF0                             00000004
 IRCF1                             00000005
 IRCF2                             00000006
 IRP                               00000007
-LATCH_PIN                         00000002
-LEFT_PRESSED                      00000042
-LOOP                              0000005A
-LOOP1                             00000058
-LOOP2                             00000056
-LOOP_CHECK                        00000018
+LATCH_PIN                         00000001
+LATCH_PIN2                        00000004
+LOOP                              000000C4
+LOOP1                             000000C2
+LOOP2                             000000C0
+LOOP_CHECK                        0000003B
+LOOP_CHECK2                       00000075
 LTS                               00000001
 MAIN_LOOP                         00000006
 MC1OUT                            00000007
@@ -409,6 +597,12 @@ MSK                               00000093
 MSK0                              00000000
 MSK1                              00000001
 MSK2                              00000002
+MPASM 5.76                    CONTROLLER.ASM   6-15-2018  16:41:49         PAGE 12
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 MSK3                              00000003
 MSK4                              00000004
 MSK5                              00000005
@@ -425,12 +619,6 @@ NOT_PD                            00000003
 NOT_POR                           00000001
 NOT_RBPU                          00000007
 NOT_RC8                           00000006
-MPASM 5.76                    CONTROLLER.ASM   6-14-2018  19:37:30         PAGE  9
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 NOT_T1SYNC                        00000002
 NOT_TO                            00000004
 NOT_TX8                           00000006
@@ -462,10 +650,18 @@ PIE1                              0000008C
 PIE2                              0000008D
 PIR1                              0000000C
 PIR2                              0000000D
+PLYR_1                            00000038
+PLYR_2                            00000039
 PORTA                             00000005
 PORTB                             00000006
 PORTC                             00000007
 PORTD                             00000008
+MPASM 5.76                    CONTROLLER.ASM   6-15-2018  16:41:49         PAGE 13
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 PORTE                             00000009
 PR2                               00000092
 PRSEN                             00000007
@@ -478,18 +674,13 @@ PSSAC1                            00000003
 PSSBD0                            00000000
 PSSBD1                            00000001
 PSTRCON                           0000009D
-PULSE_PIN                         00000001
+PULSE_PIN                         00000000
+PULSE_PIN2                        00000003
 PULSR                             00000002
 PULSS                             00000003
 PWM1CON                           0000009B
 R                                 00000002
 RA0                               00000000
-MPASM 5.76                    CONTROLLER.ASM   6-14-2018  19:37:30         PAGE 10
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 RA1                               00000001
 RA2                               00000002
 RA3                               00000003
@@ -524,6 +715,12 @@ RCIE                              00000005
 RCIF                              00000005
 RCREG                             0000001A
 RCSTA                             00000018
+MPASM 5.76                    CONTROLLER.ASM   6-15-2018  16:41:49         PAGE 14
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 RD                                00000000
 RD0                               00000000
 RD1                               00000001
@@ -538,17 +735,13 @@ RE1                               00000001
 RE2                               00000002
 RE3                               00000003
 READ_WRITE                        00000002
+REFRESH                           00000010
+RESTART                           000000A0
 RP0                               00000005
 RP1                               00000006
 RSEN                              00000001
 RX9                               00000006
 RX9D                              00000000
-MPASM 5.76                    CONTROLLER.ASM   6-14-2018  19:37:30         PAGE 11
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 R_NOT_W                           00000002
 R_W                               00000002
 S                                 00000003
@@ -581,6 +774,12 @@ SSPOV                             00000006
 SSPSTAT                           00000094
 STATUS                            00000003
 STRA                              00000000
+MPASM 5.76                    CONTROLLER.ASM   6-15-2018  16:41:49         PAGE 15
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 STRB                              00000001
 STRC                              00000002
 STRD                              00000003
@@ -602,13 +801,8 @@ T1OSCEN                           00000003
 T1SYNC                            00000002
 T2CKPS0                           00000000
 T2CKPS1                           00000001
-MPASM 5.76                    CONTROLLER.ASM   6-14-2018  19:37:30         PAGE 12
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 T2CON                             00000012
+TABLA_COL                         00000023
 TMR0                              00000001
 TMR0IE                            00000005
 TMR0IF                            00000002
@@ -639,6 +833,12 @@ TRISA6                            00000006
 TRISA7                            00000007
 TRISB                             00000086
 TRISB0                            00000000
+MPASM 5.76                    CONTROLLER.ASM   6-15-2018  16:41:49         PAGE 16
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 TRISB1                            00000001
 TRISB2                            00000002
 TRISB3                            00000003
@@ -661,12 +861,6 @@ TRISD1                            00000001
 TRISD2                            00000002
 TRISD3                            00000003
 TRISD4                            00000004
-MPASM 5.76                    CONTROLLER.ASM   6-14-2018  19:37:30         PAGE 13
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 TRISD5                            00000005
 TRISD6                            00000006
 TRISD7                            00000007
@@ -694,9 +888,16 @@ UA                                00000001
 ULPWUE                            00000005
 ULPWUIE                           00000002
 ULPWUIF                           00000002
-UP_PRESSED                        0000003C
+UP_PRESSED                        0000005C
+UP_PRESSED2                       00000096
 VCFG0                             00000004
 VCFG1                             00000005
+MPASM 5.76                    CONTROLLER.ASM   6-15-2018  16:41:49         PAGE 17
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 VR0                               00000000
 VR1                               00000001
 VR2                               00000002
@@ -720,12 +921,6 @@ WPUB2                             00000002
 WPUB3                             00000003
 WPUB4                             00000004
 WPUB5                             00000005
-MPASM 5.76                    CONTROLLER.ASM   6-14-2018  19:37:30         PAGE 14
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 WPUB6                             00000006
 WPUB7                             00000007
 WR                                00000001
@@ -756,6 +951,12 @@ _DEBUG_ON                         00001FFF
 _DEVID1                           00002006
 _EC_OSC                           00003FFB
 _EXTRC                            00003FFF
+MPASM 5.76                    CONTROLLER.ASM   6-15-2018  16:41:49         PAGE 18
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 _EXTRCIO                          00003FFE
 _EXTRC_OSC_CLKOUT                 00003FFF
 _EXTRC_OSC_NOCLKOUT               00003FFE
@@ -779,12 +980,6 @@ _IESO_ON                          00003FFF
 _INTOSC                           00003FFD
 _INTOSCIO                         00003FFC
 _INTRC_OSC_CLKOUT                 00003FFD
-MPASM 5.76                    CONTROLLER.ASM   6-14-2018  19:37:30         PAGE 15
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 _INTRC_OSC_NOCLKOUT               00003FFC
 _LP_OSC                           00003FF8
 _LVP_OFF                          00002FFF
@@ -803,22 +998,26 @@ _WRT_HALF                         000039FF
 _WRT_OFF                          00003FFF
 _XT_OSC                           00003FF9
 __16F887                          00000001
+MPASM 5.76                    CONTROLLER.ASM   6-15-2018  16:41:49         PAGE 19
 
 
 MEMORY USAGE MAP ('X' = Used,  '-' = Unused)
 
+
 0000 : X----XXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
-0040 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXX------------ ----------------
+0040 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0080 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+00C0 : XXXXXXXXXXXX---- ---------------- ---------------- ----------------
 2000 : -------XX------- ---------------- ---------------- ----------------
 
 All other memory blocks unused.
 
-Program Memory Words Used:    96
-Program Memory Words Free:  8096
+Program Memory Words Used:   200
+Program Memory Words Free:  7992
 
 
 Errors   :     0
-Warnings :     6 reported,     0 suppressed
-Messages :     6 reported,     0 suppressed
+Warnings :     8 reported,     0 suppressed
+Messages :     7 reported,     0 suppressed
 
 
