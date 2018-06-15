@@ -1,4 +1,4 @@
-MPASM 5.76                    CONTROLLER.ASM   6-14-2018  18:54:39         PAGE  1
+MPASM 5.76                    CONTROLLER.ASM   6-14-2018  19:37:30         PAGE  1
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -52,12 +52,12 @@ Warning[205]: Found directive in column 1. (ORG)
 Warning[205]: Found directive in column 1. (ORG)
 0005                  00030 ORG 0x05
 0005                  00031 INICIO          
-0005   2036           00032             CALL    CONFIGURAR
+0005   2045           00032             CALL    CONFIGURAR
 0006   200A           00033 MAIN_LOOP   CALL    GET_BOTON
 0007   2030           00034             CALL    CHECK_BOTON
-0008   2045           00035             CALL    DELAY
+0008   2054           00035             CALL    DELAY
 0009   2806           00036             GOTO    MAIN_LOOP
-MPASM 5.76                    CONTROLLER.ASM   6-14-2018  18:54:39         PAGE  2
+MPASM 5.76                    CONTROLLER.ASM   6-14-2018  19:37:30         PAGE  2
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -81,17 +81,17 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
 0016   0000           00052             NOP
 0017   1105           00053             BCF     PORTA, 2
 0018   1D85           00054 LOOP_CHECK  BTFSS   PORTA, 3
-0019   0AA3           00055             INCF    BOTON, F
+0019   0AA3           00055             INCF    BOTON, F    ;si data = 0 se presiono un boton
 001A   1085           00056             BCF     PORTA, 1
-001B   0000           00057             NOP
-001C   0000           00058             NOP
-001D   0000           00059             NOP
+001B   1003           00057             BCF     STATUS, C
+001C   0DA3           00058             RLF     BOTON, F    ;lo muevo hacia la izq para distingui botones
+001D   0000           00059             NOP                 ;el boton A se pierde
 001E   0000           00060             NOP
 001F   0000           00061             NOP
 0020   0000           00062             NOP
 0021   1485           00063             BSF     PORTA, 1
 0022   0AA2           00064             INCF    AUX, F
-0023   3008           00065             MOVLW   0x08
+0023   3008           00065             MOVLW   0x08        ;chequeo que si lo hice 8 veces
 0024   0222           00066             SUBWF   AUX, W
 0025   1C03           00067             BTFSS   STATUS, C
 0026   2818           00068             GOTO    LOOP_CHECK
@@ -106,67 +106,90 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
 002F   0008           00077             RETURN
                       00078         
 0030                  00079 CHECK_BOTON
-0030   08A3           00080         MOVF    BOTON, F
-0031   1903           00081         BTFSC   STATUS, Z
-0032   0008           00082         RETURN
-0033   01A3           00083         CLRF    BOTON
-0034   0186           00084         CLRF    PORTB
-0035   0008           00085         RETURN
-                      00086         
-0036                  00087 CONFIGURAR
-0036   1683           00088         BSF     STATUS, RP0
-0037   1703           00089         BSF     STATUS, RP1
-MPASM 5.76                    CONTROLLER.ASM   6-14-2018  18:54:39         PAGE  3
+0030   08A3           00080             MOVF        BOTON, F
+0031   1903           00081             BTFSC       STATUS, Z
+0032   0008           00082             RETURN
+0033   1A23           00083             BTFSC       BOTON, 4    ;chequeo el boton de arriba
+0034   283C           00084             GOTO        UP_PRESSED  
+0035   19A3           00085             BTFSC       BOTON, 3    ;chequeo el boton de abajo
+0036   283F           00086             GOTO        DOWN_PRESSED
+0037   1923           00087             BTFSC       BOTON, 2
+0038   2842           00088             GOTO        LEFT_PRESSED
+0039   0186           00089             CLRF        PORTB
+MPASM 5.76                    CONTROLLER.ASM   6-14-2018  19:37:30         PAGE  3
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
+003A   01A3           00090 FIN_CB      CLRF        BOTON
+003B   0008           00091             RETURN
+003C   300F           00092 UP_PRESSED  MOVLW       0x0F
+003D   0086           00093             MOVWF       PORTB
+003E   283A           00094             GOTO        FIN_CB
+003F   30F0           00095 DOWN_PRESSED MOVLW      0xF0
+0040   0086           00096             MOVWF       PORTB
+0041   283A           00097             GOTO        FIN_CB
+0042   30AA           00098 LEFT_PRESSED MOVLW      0xAA
+0043   0086           00099             MOVWF       PORTB
+0044   283A           00100             GOTO        FIN_CB
+                      00101            
+                      00102             ;CLRF       PORTB
+                      00103         
+0045                  00104 CONFIGURAR
+0045   1683           00105         BSF     STATUS, RP0
+0046   1703           00106         BSF     STATUS, RP1
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0038   0189           00090         CLRF    ANSELH
+0047   0189           00107         CLRF    ANSELH
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0039   0188           00091         CLRF    ANSEL
-003A   1303           00092         BCF     STATUS, RP1
+0048   0188           00108         CLRF    ANSEL
+0049   1303           00109         BCF     STATUS, RP1
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-003B   0186           00093         CLRF    TRISB
+004A   0186           00110         CLRF    TRISB
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-003C   0188           00094         CLRF    TRISD
+004B   0188           00111         CLRF    TRISD
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-003D   0185           00095         CLRF    TRISA
+004C   0185           00112         CLRF    TRISA
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-003E   1585           00096         BSF     TRISA, 3
-                      00097         ;MOVLW  b'10000011'
-                      00098         ;MOVWF  OPTION_REG
-                      00099         ;BSF    INTCON, T0IE
-                      00100         ;BSF    INTCON, GIE
-003F   1283           00101         BCF     STATUS, RP0
-                      00102         ;CALL   INIT_TIMER
-0040   3000           00103         MOVLW   0x00
-0041   0088           00104         MOVWF   PORTD
-0042   30FF           00105         MOVLW   0xFF
-0043   0086           00106         MOVWF   PORTB
-0044   0008           00107         RETURN
-                      00108         
-0045                  00109 DELAY
-0045   3001           00110         MOVLW   D'1'            ; Genera un loop de 250.000 uS
-0046   00A6           00111         MOVWF   CounterC
-0047   301C           00112 LOOP2   MOVLW   D'28'
-0048   00A5           00113         MOVWF   CounterB
-0049   30BD           00114 LOOP1   MOVLW   D'189'
-004A   00A4           00115         MOVWF   CounterA
-004B   0BA4           00116 LOOP    DECFSZ  CounterA,1
-004C   284B           00117         GOTO    LOOP
-004D   0BA5           00118         DECFSZ  CounterB,1
-004E   2849           00119         GOTO    LOOP1
-004F   0BA6           00120         DECFSZ  CounterC,1
-0050   2847           00121         GOTO    LOOP2
+004D   1585           00113         BSF     TRISA, 3
+                      00114         ;MOVLW  b'10000011'
+                      00115         ;MOVWF  OPTION_REG
+                      00116         ;BSF    INTCON, T0IE
+                      00117         ;BSF    INTCON, GIE
+004E   1283           00118         BCF     STATUS, RP0
+                      00119         ;CALL   INIT_TIMER
+004F   3000           00120         MOVLW   0x00
+0050   0088           00121         MOVWF   PORTD
 0051   30FF           00122         MOVLW   0xFF
 0052   0086           00123         MOVWF   PORTB
 0053   0008           00124         RETURN
                       00125         
-0054   0000           00126         NOP
-                      00127         END
-MPASM 5.76                    CONTROLLER.ASM   6-14-2018  18:54:39         PAGE  4
+0054                  00126 DELAY
+0054   3001           00127         MOVLW   D'1'            ; Genera un loop de 250.000 uS
+0055   00A6           00128         MOVWF   CounterC
+0056   301C           00129 LOOP2   MOVLW   D'28'
+0057   00A5           00130         MOVWF   CounterB
+0058   30BD           00131 LOOP1   MOVLW   D'189'
+0059   00A4           00132         MOVWF   CounterA
+005A   0BA4           00133 LOOP    DECFSZ  CounterA,1
+005B   285A           00134         GOTO    LOOP
+005C   0BA5           00135         DECFSZ  CounterB,1
+005D   2858           00136         GOTO    LOOP1
+MPASM 5.76                    CONTROLLER.ASM   6-14-2018  19:37:30         PAGE  4
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+005E   0BA6           00137         DECFSZ  CounterC,1
+005F   2856           00138         GOTO    LOOP2
+0060   30FF           00139         MOVLW   0xFF
+0061   0086           00140         MOVWF   PORTB
+0062   0008           00141         RETURN
+                      00142         
+0063   0000           00143         NOP
+                      00144         END
+MPASM 5.76                    CONTROLLER.ASM   6-14-2018  19:37:30         PAGE  5
 
 
 SYMBOL TABLE
@@ -225,7 +248,7 @@ BRG4                              00000004
 BRG5                              00000005
 BRG6                              00000006
 BRG7                              00000007
-MPASM 5.76                    CONTROLLER.ASM   6-14-2018  18:54:39         PAGE  5
+MPASM 5.76                    CONTROLLER.ASM   6-14-2018  19:37:30         PAGE  6
 
 
 SYMBOL TABLE
@@ -284,7 +307,7 @@ CCPR2H                            0000001C
 CCPR2L                            0000001B
 CHECK_BOTON                       00000030
 CHS0                              00000002
-MPASM 5.76                    CONTROLLER.ASM   6-14-2018  18:54:39         PAGE  6
+MPASM 5.76                    CONTROLLER.ASM   6-14-2018  19:37:30         PAGE  7
 
 
 SYMBOL TABLE
@@ -298,7 +321,7 @@ CKP                               00000004
 CM1CON0                           00000107
 CM2CON0                           00000108
 CM2CON1                           00000109
-CONFIGURAR                        00000036
+CONFIGURAR                        00000045
 CREN                              00000004
 CSRC                              00000007
 CounterA                          00000024
@@ -312,7 +335,8 @@ DC1B0                             00000004
 DC1B1                             00000005
 DC2B0                             00000004
 DC2B1                             00000005
-DELAY                             00000045
+DELAY                             00000054
+DOWN_PRESSED                      0000003F
 D_A                               00000005
 D_NOT_A                           00000005
 ECCPAS                            0000009C
@@ -332,6 +356,7 @@ EEIF                              00000004
 EEPGD                             00000007
 F                                 00000001
 FERR                              00000002
+FIN_CB                            0000003A
 FSR                               00000004
 FVREN                             00000000
 GCEN                              00000007
@@ -341,14 +366,14 @@ GO                                00000001
 GO_DONE                           00000001
 GO_NOT_DONE                       00000001
 HTS                               00000002
-I2C_DATA                          00000005
-I2C_READ                          00000002
-MPASM 5.76                    CONTROLLER.ASM   6-14-2018  18:54:39         PAGE  7
+MPASM 5.76                    CONTROLLER.ASM   6-14-2018  19:37:30         PAGE  8
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+I2C_DATA                          00000005
+I2C_READ                          00000002
 I2C_START                         00000003
 I2C_STOP                          00000004
 INDF                              00000000
@@ -371,9 +396,10 @@ IRCF1                             00000005
 IRCF2                             00000006
 IRP                               00000007
 LATCH_PIN                         00000002
-LOOP                              0000004B
-LOOP1                             00000049
-LOOP2                             00000047
+LEFT_PRESSED                      00000042
+LOOP                              0000005A
+LOOP1                             00000058
+LOOP2                             00000056
 LOOP_CHECK                        00000018
 LTS                               00000001
 MAIN_LOOP                         00000006
@@ -399,15 +425,15 @@ NOT_PD                            00000003
 NOT_POR                           00000001
 NOT_RBPU                          00000007
 NOT_RC8                           00000006
-NOT_T1SYNC                        00000002
-NOT_TO                            00000004
-NOT_TX8                           00000006
-MPASM 5.76                    CONTROLLER.ASM   6-14-2018  18:54:39         PAGE  8
+MPASM 5.76                    CONTROLLER.ASM   6-14-2018  19:37:30         PAGE  9
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+NOT_T1SYNC                        00000002
+NOT_TO                            00000004
+NOT_TX8                           00000006
 NOT_W                             00000002
 NOT_WRITE                         00000002
 OERR                              00000001
@@ -458,15 +484,15 @@ PULSS                             00000003
 PWM1CON                           0000009B
 R                                 00000002
 RA0                               00000000
-RA1                               00000001
-RA2                               00000002
-RA3                               00000003
-MPASM 5.76                    CONTROLLER.ASM   6-14-2018  18:54:39         PAGE  9
+MPASM 5.76                    CONTROLLER.ASM   6-14-2018  19:37:30         PAGE 10
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+RA1                               00000001
+RA2                               00000002
+RA3                               00000003
 RA4                               00000004
 RA5                               00000005
 RA6                               00000006
@@ -517,15 +543,15 @@ RP1                               00000006
 RSEN                              00000001
 RX9                               00000006
 RX9D                              00000000
-R_NOT_W                           00000002
-R_W                               00000002
-S                                 00000003
-MPASM 5.76                    CONTROLLER.ASM   6-14-2018  18:54:39         PAGE 10
+MPASM 5.76                    CONTROLLER.ASM   6-14-2018  19:37:30         PAGE 11
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+R_NOT_W                           00000002
+R_W                               00000002
+S                                 00000003
 SBOREN                            00000004
 SCKP                              00000004
 SCS                               00000000
@@ -576,15 +602,15 @@ T1OSCEN                           00000003
 T1SYNC                            00000002
 T2CKPS0                           00000000
 T2CKPS1                           00000001
-T2CON                             00000012
-TMR0                              00000001
-TMR0IE                            00000005
-MPASM 5.76                    CONTROLLER.ASM   6-14-2018  18:54:39         PAGE 11
+MPASM 5.76                    CONTROLLER.ASM   6-14-2018  19:37:30         PAGE 12
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+T2CON                             00000012
+TMR0                              00000001
+TMR0IE                            00000005
 TMR0IF                            00000002
 TMR1                              0000000E
 TMR1CS                            00000001
@@ -635,15 +661,15 @@ TRISD1                            00000001
 TRISD2                            00000002
 TRISD3                            00000003
 TRISD4                            00000004
-TRISD5                            00000005
-TRISD6                            00000006
-TRISD7                            00000007
-MPASM 5.76                    CONTROLLER.ASM   6-14-2018  18:54:39         PAGE 12
+MPASM 5.76                    CONTROLLER.ASM   6-14-2018  19:37:30         PAGE 13
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+TRISD5                            00000005
+TRISD6                            00000006
+TRISD7                            00000007
 TRISE                             00000089
 TRISE0                            00000000
 TRISE1                            00000001
@@ -668,6 +694,7 @@ UA                                00000001
 ULPWUE                            00000005
 ULPWUIE                           00000002
 ULPWUIF                           00000002
+UP_PRESSED                        0000003C
 VCFG0                             00000004
 VCFG1                             00000005
 VR0                               00000000
@@ -693,16 +720,16 @@ WPUB2                             00000002
 WPUB3                             00000003
 WPUB4                             00000004
 WPUB5                             00000005
-WPUB6                             00000006
-WPUB7                             00000007
-WR                                00000001
-WREN                              00000002
-MPASM 5.76                    CONTROLLER.ASM   6-14-2018  18:54:39         PAGE 13
+MPASM 5.76                    CONTROLLER.ASM   6-14-2018  19:37:30         PAGE 14
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+WPUB6                             00000006
+WPUB7                             00000007
+WR                                00000001
+WREN                              00000002
 WRERR                             00000003
 WUE                               00000001
 Z                                 00000002
@@ -752,16 +779,16 @@ _IESO_ON                          00003FFF
 _INTOSC                           00003FFD
 _INTOSCIO                         00003FFC
 _INTRC_OSC_CLKOUT                 00003FFD
-_INTRC_OSC_NOCLKOUT               00003FFC
-_LP_OSC                           00003FF8
-_LVP_OFF                          00002FFF
-_LVP_ON                           00003FFF
-MPASM 5.76                    CONTROLLER.ASM   6-14-2018  18:54:39         PAGE 14
+MPASM 5.76                    CONTROLLER.ASM   6-14-2018  19:37:30         PAGE 15
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+_INTRC_OSC_NOCLKOUT               00003FFC
+_LP_OSC                           00003FF8
+_LVP_OFF                          00002FFF
+_LVP_ON                           00003FFF
 _MCLRE_OFF                        00003FDF
 _MCLRE_ON                         00003FFF
 _PWRTE_OFF                        00003FFF
@@ -781,13 +808,13 @@ __16F887                          00000001
 MEMORY USAGE MAP ('X' = Used,  '-' = Unused)
 
 0000 : X----XXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
-0040 : XXXXXXXXXXXXXXXX XXXXX----------- ---------------- ----------------
+0040 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXX------------ ----------------
 2000 : -------XX------- ---------------- ---------------- ----------------
 
 All other memory blocks unused.
 
-Program Memory Words Used:    81
-Program Memory Words Free:  8111
+Program Memory Words Used:    96
+Program Memory Words Free:  8096
 
 
 Errors   :     0

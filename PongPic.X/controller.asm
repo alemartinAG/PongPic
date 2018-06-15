@@ -52,17 +52,17 @@ GET_BOTON
 	    NOP
 	    BCF	    PORTA, 2
 LOOP_CHECK  BTFSS   PORTA, 3
-	    INCF    BOTON, F
+	    INCF    BOTON, F	;si data = 0 se presiono un boton
 	    BCF	    PORTA, 1
-	    NOP
-	    NOP
-	    NOP
+	    BCF	    STATUS, C
+	    RLF	    BOTON, F	;lo muevo hacia la izq para distingui botones
+	    NOP			;el boton A se pierde
 	    NOP
 	    NOP
 	    NOP
 	    BSF	    PORTA, 1
 	    INCF    AUX, F
-	    MOVLW   0x08
+	    MOVLW   0x08	;chequeo que si lo hice 8 veces
 	    SUBWF   AUX, W
 	    BTFSS   STATUS, C
 	    GOTO    LOOP_CHECK
@@ -77,12 +77,29 @@ LOOP_CHECK  BTFSS   PORTA, 3
 	    RETURN
 	
 CHECK_BOTON
-	MOVF	BOTON, F
-	BTFSC	STATUS, Z
-	RETURN
-	CLRF	BOTON
-	CLRF	PORTB
-	RETURN
+	    MOVF	BOTON, F
+	    BTFSC	STATUS, Z
+	    RETURN
+	    BTFSC	BOTON, 4    ;chequeo el boton de arriba
+	    GOTO	UP_PRESSED  
+	    BTFSC	BOTON, 3    ;chequeo el boton de abajo
+	    GOTO	DOWN_PRESSED
+	    BTFSC	BOTON, 2
+	    GOTO	LEFT_PRESSED
+	    CLRF	PORTB
+FIN_CB	    CLRF	BOTON
+	    RETURN
+UP_PRESSED  MOVLW	0x0F
+	    MOVWF	PORTB
+	    GOTO	FIN_CB
+DOWN_PRESSED MOVLW	0xF0
+	    MOVWF	PORTB
+	    GOTO	FIN_CB
+LEFT_PRESSED MOVLW	0xAA
+	    MOVWF	PORTB
+	    GOTO	FIN_CB
+	   
+	    ;CLRF	PORTB
 	
 CONFIGURAR
 	BSF	STATUS, RP0
