@@ -1,4 +1,4 @@
-MPASM 5.77                          MAIN.ASM   6-14-2018  13:47:38         PAGE  1
+MPASM 5.77                          MAIN.ASM   6-15-2018  13:52:45         PAGE  1
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -44,7 +44,7 @@ Warning[203]: Found opcode in column 1. (GOTO)
 Warning[205]: Found directive in column 1. (ORG)
 0004                  00023 ORG 0x04
 Warning[203]: Found opcode in column 1. (GOTO)
-0004   282E           00024 GOTO ISR
+0004   282F           00024 GOTO ISR
                       00025 
 Warning[205]: Found directive in column 1. (ORG)
 0005                  00026 ORG 0x05
@@ -57,7 +57,7 @@ Message[302]: Register in operand not in bank 0.  Ensure that bank bits are corr
 0008   0188           00031                 CLRF    ANSEL
 0009   1303           00032                 BCF     STATUS, RP1
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-MPASM 5.77                          MAIN.ASM   6-14-2018  13:47:38         PAGE  2
+MPASM 5.77                          MAIN.ASM   6-15-2018  13:52:45         PAGE  2
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -72,100 +72,101 @@ Message[302]: Register in operand not in bank 0.  Ensure that bank bits are corr
 000E   168B           00037                 BSF     INTCON, T0IE
 000F   178B           00038                 BSF     INTCON, GIE
 0010   1283           00039                 BCF     STATUS, RP0
-0011   202B           00040                 CALL    INIT_TIMER
+0011   202C           00040                 CALL    INIT_TIMER
 0012   3000           00041                 MOVLW   0x00
-0013   0088           00042                 MOVWF   PORTD                           ;Filas en PuertoD
-0014   0086           00043                 MOVWF   PORTB                           ;Columnas en PuertoB
-0015   01A0           00044                 CLRF    NCOL                            ;Limpio variables
-0016   01A1           00045                 CLRF    NFIL
-                      00046                 
-0017   0000           00047 MAIN_LOOP       NOP 
-0018   2817           00048                 GOTO    MAIN_LOOP
-                      00049 
+0013   0088           00042                 MOVWF   PORTD                           ;Columnas en PuertoD
+0014   30FF           00043                 MOVLW   0xFF
+0015   0086           00044                 MOVWF   PORTB                           ;Filas en PuertoB
+0016   01A0           00045                 CLRF    NCOL                            ;Limpio variables
+0017   01A1           00046                 CLRF    NFIL
+                      00047                 
+0018   0000           00048 MAIN_LOOP       NOP 
+0019   2818           00049                 GOTO    MAIN_LOOP
                       00050 
-0019                  00051 TABLA_COL                                               ;En 0 prende la columna
-0019   0782           00052                 ADDWF   PCL, F                          ;correspondiente
-001A   34FE           00053                 RETLW   b'11111110'
-001B   34FD           00054                 RETLW   b'11111101'
-001C   34FB           00055                 RETLW   b'11111011'
-001D   34F7           00056                 RETLW   b'11110111'
-001E   34EF           00057                 RETLW   b'11101111'
-001F   34DF           00058                 RETLW   b'11011111'
-0020   34BF           00059                 RETLW   b'10111111'
-0021   347F           00060                 RETLW   b'01111111'
-                      00061                 
-0022                  00062 TABLA_FIL                                               ;En 1 prende la fila
-0022   0782           00063                 ADDWF   PCL, F                          ;correspondiente
-0023   3401           00064                 RETLW   0x01
-0024   3402           00065                 RETLW   0x02
-0025   3404           00066                 RETLW   0x04
-0026   3408           00067                 RETLW   0x08
-0027   3410           00068                 RETLW   0x10
-0028   3420           00069                 RETLW   0x20
-0029   3440           00070                 RETLW   0x40
-002A   3480           00071                 RETLW   0x80            
-                      00072                         
-                      00073                 
-002B                  00074 INIT_TIMER                                              ;Timer0 aprox en 1 uSeg
-002B   30FF           00075                 MOVLW   d'255'
-002C   0081           00076                 MOVWF   TMR0
-002D   0008           00077                 RETURN
-                      00078                 
-002E                  00079 ISR
-002E   190B           00080                 BTFSC   INTCON, T0IF
-002F   2031           00081                 CALL    INTER_TMR
-0030   0009           00082                 RETFIE
-                      00083 
-MPASM 5.77                          MAIN.ASM   6-14-2018  13:47:38         PAGE  3
+                      00051 
+001A                  00052 TABLA_COL                                               ;En 0 prende la columna
+001A   0782           00053                 ADDWF   PCL, F                          ;correspondiente
+001B   34FE           00054                 RETLW   b'11111110'
+001C   34FD           00055                 RETLW   b'11111101'
+001D   34FB           00056                 RETLW   b'11111011'
+001E   34F7           00057                 RETLW   b'11110111'
+001F   34EF           00058                 RETLW   b'11101111'
+0020   34DF           00059                 RETLW   b'11011111'
+0021   34BF           00060                 RETLW   b'10111111'
+0022   347F           00061                 RETLW   b'01111111'
+                      00062                 
+0023                  00063 TABLA_FIL                                               ;En 1 prende la fila
+0023   0782           00064                 ADDWF   PCL, F                          ;correspondiente
+0024   3401           00065                 RETLW   0x01
+0025   3402           00066                 RETLW   0x02
+0026   3404           00067                 RETLW   0x04
+0027   3408           00068                 RETLW   0x08
+0028   3410           00069                 RETLW   0x10
+0029   3420           00070                 RETLW   0x20
+002A   3440           00071                 RETLW   0x40
+002B   3480           00072                 RETLW   0x80            
+                      00073                         
+                      00074                 
+002C                  00075 INIT_TIMER                                              ;Timer0 aprox en 1 uSeg
+002C   30FF           00076                 MOVLW   d'255'
+002D   0081           00077                 MOVWF   TMR0
+002E   0008           00078                 RETURN
+                      00079                 
+002F                  00080 ISR
+002F   190B           00081                 BTFSC   INTCON, T0IF
+0030   2032           00082                 CALL    INTER_TMR
+0031   0009           00083                 RETFIE
+MPASM 5.77                          MAIN.ASM   6-15-2018  13:52:45         PAGE  3
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-0031                  00084 INTER_TMR       
-0031   110B           00085                 BCF     INTCON, T0IF
-0032   300F           00086                 MOVLW   d'15'                           ;Genera un loop de 
-0033   00A5           00087                 MOVWF   CounterC                        ;999.999 uSeg
+                      00084 
+0032                  00085 INTER_TMR       
+0032   110B           00086                 BCF     INTCON, T0IF
+0033   300F           00087                 MOVLW   d'15'                           ;Genera un loop de 
+0034   00A5           00088                 MOVWF   CounterC                        ;999.999 uSeg
 Warning[207]: Found label after column 1. (LOOP2)
-0034   3068           00088     LOOP2       MOVLW   d'104'
-0035   00A4           00089                 MOVWF   CounterB
+0035   3068           00089     LOOP2       MOVLW   d'104'
+0036   00A4           00090                 MOVWF   CounterB
 Warning[207]: Found label after column 1. (LOOP1)
-0036   308A           00090     LOOP1       MOVLW   d'138'
-0037   00A3           00091                 MOVWF   CounterA
+0037   308A           00091     LOOP1       MOVLW   d'138'
+0038   00A3           00092                 MOVWF   CounterA
 Warning[207]: Found label after column 1. (LOOP)
-0038   0BA3           00092     LOOP        DECFSZ  CounterA,F
-0039   2838           00093                 GOTO    LOOP
-003A   0BA4           00094                 DECFSZ  CounterB,F
-003B   2836           00095                 GOTO    LOOP1
-003C   0BA5           00096                 DECFSZ  CounterC,F
-003D   2834           00097                 GOTO    LOOP2
-                      00098                 ;INCF   AUX, F
-                      00099                 ;BTFSS  AUX, 2
-                      00100                 ;GOTO   TERMINA
-003E   0820           00101                 MOVF    NCOL, W
-003F   2019           00102                 CALL    TABLA_COL               
-0040   0086           00103                 MOVWF   PORTB
-0041   0821           00104                 MOVF    NFIL, W
-0042   2022           00105                 CALL    TABLA_FIL
-0043   0088           00106                 MOVWF   PORTD
-0044   0AA0           00107                 INCF    NCOL, F
-0045   3008           00108                 MOVLW   0x08
-0046   0220           00109                 SUBWF   NCOL, W
-0047   1803           00110                 BTFSC   STATUS, C
-0048   01A0           00111                 CLRF    NCOL
-0049   0AA1           00112                 INCF    NFIL, F
-004A   3008           00113                 MOVLW   0x08
-004B   0221           00114                 SUBWF   NFIL, W
-004C   1803           00115                 BTFSC   STATUS, C
-004D   01A1           00116                 CLRF    NFIL
-004E   202B           00117 TERMINA         CALL    INIT_TIMER
-004F   0008           00118                 RETURN
-                      00119                 
-                      00120 
-                      00121                 
-0050   0000           00122                 NOP
-                      00123                 END
-MPASM 5.77                          MAIN.ASM   6-14-2018  13:47:38         PAGE  4
+0039   0BA3           00093     LOOP        DECFSZ  CounterA,F
+003A   2839           00094                 GOTO    LOOP
+003B   0BA4           00095                 DECFSZ  CounterB,F
+003C   2837           00096                 GOTO    LOOP1
+003D   0BA5           00097                 DECFSZ  CounterC,F
+003E   2835           00098                 GOTO    LOOP2
+                      00099                 ;INCF   AUX, F
+                      00100                 ;BTFSS  AUX, 2
+                      00101                 ;GOTO   TERMINA
+003F   0820           00102                 MOVF    NCOL, W
+0040   201A           00103                 CALL    TABLA_COL               
+0041   0088           00104                 MOVWF   PORTD
+0042   0821           00105                 MOVF    NFIL, W
+0043   2023           00106                 CALL    TABLA_FIL
+0044   0086           00107                 MOVWF   PORTB
+0045   0AA0           00108                 INCF    NCOL, F
+0046   3008           00109                 MOVLW   0x08
+0047   0220           00110                 SUBWF   NCOL, W
+0048   1803           00111                 BTFSC   STATUS, C
+0049   01A0           00112                 CLRF    NCOL
+004A   0AA1           00113                 INCF    NFIL, F
+004B   3008           00114                 MOVLW   0x08
+004C   0221           00115                 SUBWF   NFIL, W
+004D   1803           00116                 BTFSC   STATUS, C
+004E   01A1           00117                 CLRF    NFIL
+004F   202C           00118 TERMINA         CALL    INIT_TIMER
+0050   0008           00119                 RETURN
+                      00120                 
+                      00121 
+                      00122                 
+0051   0000           00123                 NOP
+                      00124                 END
+MPASM 5.77                          MAIN.ASM   6-15-2018  13:52:45         PAGE  4
 
 
 SYMBOL TABLE
@@ -224,7 +225,7 @@ BRG5                              00000005
 BRG6                              00000006
 BRG7                              00000007
 BRG8                              00000000
-MPASM 5.77                          MAIN.ASM   6-14-2018  13:47:38         PAGE  5
+MPASM 5.77                          MAIN.ASM   6-15-2018  13:52:45         PAGE  5
 
 
 SYMBOL TABLE
@@ -283,7 +284,7 @@ CCPR2L                            0000001B
 CHS0                              00000002
 CHS1                              00000003
 CHS2                              00000004
-MPASM 5.77                          MAIN.ASM   6-14-2018  13:47:38         PAGE  6
+MPASM 5.77                          MAIN.ASM   6-15-2018  13:52:45         PAGE  6
 
 
 SYMBOL TABLE
@@ -340,9 +341,9 @@ I2C_START                         00000003
 I2C_STOP                          00000004
 INDF                              00000000
 INICIO                            00000005
-INIT_TIMER                        0000002B
+INIT_TIMER                        0000002C
 INTCON                            0000000B
-MPASM 5.77                          MAIN.ASM   6-14-2018  13:47:38         PAGE  7
+MPASM 5.77                          MAIN.ASM   6-15-2018  13:52:45         PAGE  7
 
 
 SYMBOL TABLE
@@ -350,7 +351,7 @@ SYMBOL TABLE
 
 INTE                              00000004
 INTEDG                            00000006
-INTER_TMR                         00000031
+INTER_TMR                         00000032
 INTF                              00000001
 IOCB                              00000096
 IOCB0                             00000000
@@ -365,12 +366,12 @@ IRCF0                             00000004
 IRCF1                             00000005
 IRCF2                             00000006
 IRP                               00000007
-ISR                               0000002E
-LOOP                              00000038
-LOOP1                             00000036
-LOOP2                             00000034
+ISR                               0000002F
+LOOP                              00000039
+LOOP1                             00000037
+LOOP2                             00000035
 LTS                               00000001
-MAIN_LOOP                         00000017
+MAIN_LOOP                         00000018
 MC1OUT                            00000007
 MC2OUT                            00000006
 MSK                               00000093
@@ -401,7 +402,7 @@ NOT_WRITE                         00000002
 OERR                              00000001
 OPTION_REG                        00000081
 OSCCON                            0000008F
-MPASM 5.77                          MAIN.ASM   6-14-2018  13:47:38         PAGE  8
+MPASM 5.77                          MAIN.ASM   6-15-2018  13:52:45         PAGE  8
 
 
 SYMBOL TABLE
@@ -460,7 +461,7 @@ RA6                               00000006
 RA7                               00000007
 RB0                               00000000
 RB1                               00000001
-MPASM 5.77                          MAIN.ASM   6-14-2018  13:47:38         PAGE  9
+MPASM 5.77                          MAIN.ASM   6-15-2018  13:52:45         PAGE  9
 
 
 SYMBOL TABLE
@@ -519,7 +520,7 @@ SCS                               00000000
 SEN                               00000000
 SENDB                             00000003
 SMP                               00000007
-MPASM 5.77                          MAIN.ASM   6-14-2018  13:47:38         PAGE 10
+MPASM 5.77                          MAIN.ASM   6-15-2018  13:52:45         PAGE 10
 
 
 SYMBOL TABLE
@@ -570,15 +571,15 @@ T1SYNC                            00000002
 T2CKPS0                           00000000
 T2CKPS1                           00000001
 T2CON                             00000012
-TABLA_COL                         00000019
-TABLA_FIL                         00000022
-TERMINA                           0000004E
+TABLA_COL                         0000001A
+TABLA_FIL                         00000023
+TERMINA                           0000004F
 TMR0                              00000001
 TMR0IE                            00000005
 TMR0IF                            00000002
 TMR1                              0000000E
 TMR1CS                            00000001
-MPASM 5.77                          MAIN.ASM   6-14-2018  13:47:38         PAGE 11
+MPASM 5.77                          MAIN.ASM   6-15-2018  13:52:45         PAGE 11
 
 
 SYMBOL TABLE
@@ -637,7 +638,7 @@ TRISD7                            00000007
 TRISE                             00000089
 TRISE0                            00000000
 TRISE1                            00000001
-MPASM 5.77                          MAIN.ASM   6-14-2018  13:47:38         PAGE 12
+MPASM 5.77                          MAIN.ASM   6-15-2018  13:52:45         PAGE 12
 
 
 SYMBOL TABLE
@@ -696,7 +697,7 @@ WREN                              00000002
 WRERR                             00000003
 WUE                               00000001
 Z                                 00000002
-MPASM 5.77                          MAIN.ASM   6-14-2018  13:47:38         PAGE 13
+MPASM 5.77                          MAIN.ASM   6-15-2018  13:52:45         PAGE 13
 
 
 SYMBOL TABLE
@@ -755,7 +756,7 @@ _LVP_ON                           00003FFF
 _MCLRE_OFF                        00003FDF
 _MCLRE_ON                         00003FFF
 _PWRTE_OFF                        00003FFF
-MPASM 5.77                          MAIN.ASM   6-14-2018  13:47:38         PAGE 14
+MPASM 5.77                          MAIN.ASM   6-15-2018  13:52:45         PAGE 14
 
 
 SYMBOL TABLE
@@ -777,13 +778,13 @@ __16F887                          00000001
 MEMORY USAGE MAP ('X' = Used,  '-' = Unused)
 
 0000 : X---XXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
-0040 : XXXXXXXXXXXXXXXX X--------------- ---------------- ----------------
+0040 : XXXXXXXXXXXXXXXX XX-------------- ---------------- ----------------
 2000 : -------XX------- ---------------- ---------------- ----------------
 
 All other memory blocks unused.
 
-Program Memory Words Used:    78
-Program Memory Words Free:  8114
+Program Memory Words Used:    79
+Program Memory Words Free:  8113
 
 
 Errors   :     0
